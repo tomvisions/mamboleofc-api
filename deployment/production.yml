@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - git config --global credential.helper '!aws --region us-east-1 codecommit credential-helper $@'
+      - git config --global credential.UseHttpPath true
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - sam --version
+      - ln -s package.prod.json package.json
+      - npm install
+  build:
+    commands:
+      - npm run deploy

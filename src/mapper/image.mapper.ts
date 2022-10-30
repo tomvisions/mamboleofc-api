@@ -1,0 +1,85 @@
+"use strict";
+
+import {FileProperties, S3Mapper} from "./s3.mapper";
+const moment = require('moment');
+import {Image} from "../models/";
+import * as uuid from 'uuid';
+
+export class ImageMapper extends S3Mapper {
+
+    async getImagesByGalleryId(galleryId:Number = null) {
+
+        try {
+            const paramsWhere = {
+                where: JSON.parse(`{
+                    "gallery_id":"${galleryId}"
+                }`)};
+            return await Image.findAll(paramsWhere).then(images => {
+
+                const imageArray = [];
+
+                for (let image of images) {
+                    imageArray.push(image['dataValues']);
+                }
+
+                return imageArray;
+            }).catch(err => {
+                return err;
+            })
+        } catch (error) {
+            console.log(`Could not fetch galleries ${error}`)
+        }
+    }
+
+    static async upload(params) {
+        try {
+            const image = {
+                id: uuid(),
+                name: params.name,
+                description: params.description,
+                createdAt: moment().format('YYYY-MM-DD'),
+                updatedAt: moment().format('YYYY-MM-DD'),
+            };
+
+            return await Image.create(image).then(data => {
+                return data;
+            }).catch(err => {
+                return err;
+            })
+        } catch (error) {
+            console.log(`Could not fetch galleries ${error}`)
+        }
+    }
+
+    async uploadImages(body) {
+        let fileProperties: FileProperties
+        try {
+            const images = JSON.parse(body.files);
+
+            for (let image of images) {
+                const id = uuid.v4();
+                await this.generatePrePath(`/tmp/mamboleofc/gallery/${body.gallery}`);
+
+                fileProperties = await this.getImageReadyForUpload(`mamboleofc/gallery/${body.gallery}/${id}`, image);
+
+                let gallery_params = {
+                    id: id,
+                    file: `mamboleofc/gallery/${body.gallery}/${id}.${fileProperties.extension}`,
+                    gallery_id: body.gallery,
+                    image_type: fileProperties.image_type
+                }
+
+                await Image.create(gallery_params).then(data => {
+
+                    return {'success': data.toString()}
+                }).catch(err => {
+                    return {'error': err.toString()}
+                })
+            }
+
+            return {};
+        } catch (error) {
+            return {result: "error", message: error.toString()}
+        }
+    }
+}
