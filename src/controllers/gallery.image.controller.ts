@@ -4,7 +4,6 @@ import {ImageMapper} from '../mapper/';
 export class GalleryImageController {
 
     static async apiUploadImage(req: any, res: any, next: any) {
-
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, "/tmp");
@@ -27,6 +26,8 @@ export class GalleryImageController {
                 })
             }
 
+            const imageMapper = new ImageMapper();
+            await imageMapper.uploadImage(req.body);
             return res.json({info1:req.body});
         });
     }

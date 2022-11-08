@@ -4,14 +4,7 @@ import {BaseMapper} from "./base.mapper";
 import {Access, Gallery, TeamUser, User} from "../models";
 //import { User} from "../models";
 import {or} from "../db";
-
 import dotenv from 'dotenv';
-import Base64 from 'crypto-js/enc-base64';
-import HmacSHA256 from 'crypto-js/hmac-sha256';
-import Utf8 from 'crypto-js/enc-utf8';
-import {Model} from "sequelize";
-
-//const {DataTypes, Model} = require("sequelize");
 
 export class UserMapper extends BaseMapper {
     private _PARAMS_ID: string = 'id';
@@ -87,12 +80,9 @@ export class UserMapper extends BaseMapper {
      * @param params
      */
     async getUserBasedOnPassword(params) {
-        // get config vars
-        dotenv.config();
-        console.log('the secret');
-        console.log(process.env.TOKEN_SECRET);
         try {
-
+            // get config vars
+            dotenv.config();
             const userParams = {
                 where: {
                     email: params.email,
@@ -152,75 +142,6 @@ export class UserMapper extends BaseMapper {
             return error.toString() //["error" => error.toString()];
         }
     }
-
-
-    /**
-     * Generates a JWT token using CryptoJS library.
-     *
-     * This generator is for mocking purposes only and it is NOT
-     * safe to use it in production frontend applications!
-     *
-     * @private
-     *//*
-    private generateJWTToken(): string {
-
-        dotenv.config();
-        // Define token header
-        const header = {
-            alg: 'HS256',
-            typ: 'JWT'
-        };
-
-        // Calculate the issued at and expiration dates
-        const date = new Date();
-        const iat = Math.floor(date.getTime() / 1000);
-        const exp = Math.floor((date.setDate(date.getDate() + 7)) / 1000);
-
-        // Define token payload
-        const payload = {
-            iat: iat,
-            iss: 'Fuse',
-            exp: exp
-        };
-
-        // Stringify and encode the header
-        const stringifiedHeader = Utf8.parse(JSON.stringify(header));
-        const encodedHeader = this._base64url(stringifiedHeader);
-
-        // Stringify and encode the payload
-        const stringifiedPayload = Utf8.parse(JSON.stringify(payload));
-        const encodedPayload = this._base64url(stringifiedPayload);
-
-        // Sign the encoded header and mock-api
-        // Sign the encoded header and mock-api
-        let signature: any = encodedHeader + '.' + encodedPayload;
-        signature = HmacSHA256(signature, process.env.TOKEN_SECRET);
-        signature = this._base64url(signature);
-
-        // Build and return the token
-        return encodedHeader + '.' + encodedPayload + '.' + signature;
-    }
-
-    /**
-     * Return base64 encoded version of the given string
-     *
-     * @param source
-     * @private
-     *//*
-    private _base64url(source: any): string {
-        // Encode in classical base64
-        let encodedSource = Base64.stringify(source);
-
-        // Remove padding equal characters
-        encodedSource = encodedSource.replace(/=+$/, '');
-
-        // Replace characters according to base64url specifications
-        encodedSource = encodedSource.replace(/\+/g, '-');
-        encodedSource = encodedSource.replace(/\//g, '_');
-
-        // Return the base64 encoded string
-        return encodedSource;
-    } */
 
     get PARAMS_ID(): string {
         return this._PARAMS_ID;
