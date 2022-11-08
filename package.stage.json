@@ -26,7 +26,7 @@
     "deploy": "npm run environment && npm run build && npm run package-deploy",
     "environment": "cross-env NODE_ENV=stage",
     "start": "cross-env DEBUG=http NODE_ENV=stage ts-node src/app.local",
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "find ./dist/test -name '*.js' | xargs nyc --nyc-path ./.nycrc mocha -R spec",
     "test:watch": "npm test -- -- -w"
   },
   "license": "Apache-2.0",

@@ -1,10 +1,6 @@
 import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3";
 import fs, {existsSync} from "fs";
-//import gm from 'gm';
-//const gm = require('gm');
 const sizeOf = require('image-size');
-import crypto from "crypto";
-import request from 'request';
 
 export interface FileProperties {
     content_type?: string;
@@ -88,7 +84,10 @@ export class S3Mapper {
         }
     }
 
-
+    /**
+     *
+     * @param path
+     */
     async generatePrePath(path:string) {
         if (!existsSync(path)) {
             fs.mkdirSync(path, {recursive: true});
@@ -96,9 +95,8 @@ export class S3Mapper {
     }
 
 
-
     /**
-     *
+     * Function that
      * @param key:string
      * @param image:string
      */
@@ -106,8 +104,7 @@ export class S3Mapper {
         let fileProperties: FileProperties;
 
         fileProperties = await this.writeToDisk(key, image)
-        console.log('file stuff');
-        console.log(fileProperties);
+
         await this.uploadToS3(`${key}.${fileProperties.extension}`, fileProperties.content_type);
 
         return fileProperties;

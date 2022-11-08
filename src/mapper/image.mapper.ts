@@ -1,19 +1,21 @@
 "use strict";
 
 import {FileProperties, S3Mapper} from "./s3.mapper";
+
 const moment = require('moment');
 import {Image} from "../models/";
 import * as uuid from 'uuid';
 
 export class ImageMapper extends S3Mapper {
 
-    async getImagesByGalleryId(galleryId:Number = null) {
+    async getImagesByGalleryId(galleryId: Number = null) {
 
         try {
             const paramsWhere = {
                 where: JSON.parse(`{
                     "gallery_id":"${galleryId}"
-                }`)};
+                }`)
+            };
             return await Image.findAll(paramsWhere).then(images => {
 
                 const imageArray = [];
@@ -31,14 +33,22 @@ export class ImageMapper extends S3Mapper {
         }
     }
 
-    static async upload(params) {
+    async uploadImage(body) {
         try {
+            let fileProperties: FileProperties
+            const id = uuid.v4();
+            await this.generatePrePath(`/tmp/mamboleofc/gallery/${body.gallery_id}`);
+
+            fileProperties = await this.getImageReadyForUpload(`mamboleofc/gallery/${body.gallery_id}/${id}`, body.file);
+
+            console.log(body);
             const image = {
-                id: uuid(),
-                name: params.name,
-                description: params.description,
+                id: id,
+                file: `mamboleofc/gallery/${body.gallery_id}/${id}.${fileProperties.extension}`,
+                gallery_id: body.gallery_id,
                 createdAt: moment().format('YYYY-MM-DD'),
                 updatedAt: moment().format('YYYY-MM-DD'),
+                image_type: fileProperties.image_type
             };
 
             return await Image.create(image).then(data => {

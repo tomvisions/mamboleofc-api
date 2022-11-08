@@ -13,7 +13,7 @@ import bodyparser from 'body-parser';
 
 app.use(express.static("/tmp"));
 app.use(bodyparser.urlencoded({extended: true}));
-app.use(bodyparser.json());
+app.use(bodyparser.json({limit: '50mb'}));
 app.use(cors());
 app.use(compression());
 

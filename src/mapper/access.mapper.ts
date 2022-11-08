@@ -63,8 +63,6 @@ export class AccessMapper extends BaseMapper{
     }
     public async apiCreateAccess(params) {
         try {
-            console.log('api create access');
-
             params.slug = params.name.toLowerCase().replace('/ /g','-');
 
             const result = await Access.findOrCreate({
