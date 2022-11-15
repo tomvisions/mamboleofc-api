@@ -51,5 +51,5 @@ if (process.env.NODE_ENV === 'dev') {
 
 let sequelizeClass = new SequelizeApi(process.env.DATABASE, process.env.USERNAME,process.env.PASSWORD, options );//.initialize();
 let sequelize = sequelizeClass.initialize();
-let boo = JSON.parse(`{"boo":${process.env}`);
-export {sequelize, boo};
+options = JSON.parse(`{"boo":${process.env}`);
+export {sequelize, options};
