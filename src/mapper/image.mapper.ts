@@ -8,7 +8,7 @@ import * as uuid from 'uuid';
 
 export class ImageMapper extends S3Mapper {
 
-    async getImagesByGalleryId(galleryId: Number = null) {
+    async getImagesByGalleryId(galleryId: string = null) {
 
         try {
             const paramsWhere = {
@@ -16,12 +16,39 @@ export class ImageMapper extends S3Mapper {
                     "gallery_id":"${galleryId}"
                 }`)
             };
+            console.log(paramsWhere);
             return await Image.findAll(paramsWhere).then(images => {
 
                 const imageArray = [];
 
                 for (let image of images) {
-                    imageArray.push(image['dataValues']);
+                    imageArray.push(image.get());
+                }
+
+//                console.log(imageArray);
+                return imageArray;
+            }).catch(err => {
+                return err;
+            })
+        } catch (error) {
+            console.log(`Could not fetch galleries ${error}`)
+        }
+    }
+
+    async getPrimaryImageByGalleryId(galleryId: Number = null) {
+        try {
+            const paramsWhere = {
+                where: JSON.parse(`{
+                    "gallery_id":"${galleryId}",
+                    "primary":1 
+                }`)
+            };
+            return await Image.findAll(paramsWhere).then(images => {
+
+                const imageArray = [];
+
+                for (let image of images) {
+                    imageArray.push(image.get());
                 }
 
                 return imageArray;
@@ -93,3 +120,5 @@ export class ImageMapper extends S3Mapper {
         }
     }
 }
+
+export const imageMapper = new ImageMapper();

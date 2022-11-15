@@ -1,4 +1,4 @@
-import {galleryMapper} from "../mapper/";
+import {galleryMapper, Options} from "../mapper/";
 
 export class GalleryController {
 
@@ -10,11 +10,18 @@ export class GalleryController {
      */
     public static async apiGetAllGalleries(req: any, res: any, next: any) {
         try {
-            if (!galleryMapper.checkAuthenication(req.headers.authorization)) {
-                return res.status(500).json({error: 'Not Authorized to access the API'})
+    //        if (!galleryMapper.checkAuthenication(req.headers.authorization)) {
+        //        return res.status(500).json({error: 'Not Authorized to access the API'})
+      //      }
+            const options:Options = {image: {primary:false}, gallery: {}};
+
+            if (req.query.primary === '1') {
+                options.image.primary = true;
+            } else if (req.query.gallery_id) {
+                options.gallery.id = req.query.gallery_id;
             }
 
-            const galleries = await galleryMapper.getAllGalleries();
+            const galleries = await galleryMapper.getAllGalleries(options);
 
             if (typeof galleries === 'string') {
                 return res.status(500).json({error: galleries})
@@ -25,7 +32,7 @@ export class GalleryController {
             return res.status(200).json(paginationResults);
 
         } catch (error) {
-            res.status(500).json({error: error})
+            res.status(500).json({error: error.toString()})
         }
 
     }
