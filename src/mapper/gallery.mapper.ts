@@ -39,13 +39,13 @@ export class GalleryMapper extends BaseMapper {
             }
 
             const galleries = await Gallery.findAll(paramsWhere).then(gallery => {
-
-                return this.processArray(gallery);
+                return gallery;
+           //     return this.processArray(gallery);
             }).catch(err => {
                 return err;
             })
 
-            if (options.image.primary) {
+/*            if (options.image.primary) {
                 for (let gallery of galleries) {
                     gallery.images = await imageMapper.getPrimaryImageByGalleryId(gallery.id);
                     globalGallery.push(gallery);
@@ -55,7 +55,8 @@ export class GalleryMapper extends BaseMapper {
 
                 galleries[0].images = await imageMapper.getImagesByGalleryId(options.gallery.id);
                 return galleries;
-            }
+            } */
+            return galleries;
         } catch (error) {
 
             return error.toString();
