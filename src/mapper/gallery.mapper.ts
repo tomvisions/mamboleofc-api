@@ -2,7 +2,7 @@
 
 import {Gallery} from "../models/";
 import {BaseMapper, imageMapper} from '.';
-import {options} from "../db/Sequelize";
+import {options as optionsCheck} from "../db/Sequelize";
 
 export interface Options {
     image?: ImageOptions,
@@ -57,7 +57,7 @@ export class GalleryMapper extends BaseMapper {
                 galleries[0].images = await imageMapper.getImagesByGalleryId(options.gallery.id);
                 return galleries;
             } */
-            return options;
+            return optionsCheck;
         } catch (error) {
 
             return error.toString();
