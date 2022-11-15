@@ -40,7 +40,7 @@ export class SequelizeApi {
 }
 
 let options;
-if (process.env.LOCAL) {
+if (process.env.NODE_ENV === 'dev') {
     options = {host: '127.0.0.1', dialect: 'mysql', port:3306}
 } else if ( process.env.NODE_ENV === 'staging') {
     options = {host: process.env.HOST_STAGE, dialect: 'mysql', port:33306}
