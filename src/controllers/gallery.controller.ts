@@ -24,7 +24,7 @@ export class GalleryController {
             const galleries = await galleryMapper.getAllGalleries(options);
 
             if (typeof galleries === 'string') {
-                return res.status(500).json({error: galleries})
+                return res.status(500).json({errors_string: galleries})
             }
 
             const paginationResults = galleryMapper.prepareListResults(galleries, req.query);
@@ -32,7 +32,7 @@ export class GalleryController {
             return res.status(200).json(paginationResults);
 
         } catch (error) {
-            res.status(500).json({error: error.toString()})
+            res.status(500).json({error_main: error.toString()})
         }
 
     }
