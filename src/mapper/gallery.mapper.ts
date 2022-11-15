@@ -1,7 +1,21 @@
 "use strict";
 
 import {Gallery} from "../models/";
-import {BaseMapper, ImageMapper} from '.';
+import {BaseMapper, imageMapper} from '.';
+
+export interface Options {
+    image?: ImageOptions,
+    gallery?: GalleryOptions
+}
+export interface ImageOptions {
+    primary?:boolean;
+    gallery_id?:string;
+}
+
+export interface GalleryOptions {
+    id?:string;
+}
+
 
 export class GalleryMapper extends BaseMapper {
     private _PARAMS_ID: string = 'id';
@@ -10,22 +24,38 @@ export class GalleryMapper extends BaseMapper {
     private _LIST_NAME: string = 'galleries';
 
 
-    public async getAllGalleries(params = {}) { //: Promise<string[] | string> {
+
+    public async getAllGalleries(options: Options) { //: Promise<string[] | string> {
         try {
             const globalGallery = [];
-            const galleries = await Gallery.findAll(params).then(gallery => {
+            let paramsWhere = {};
+
+            if  (options.gallery.id) {
+                paramsWhere = {
+                    where: JSON.parse(`{
+                    "id":"${options.gallery.id}"
+                }`)
+                }
+            }
+
+            const galleries = await Gallery.findAll(paramsWhere).then(gallery => {
 
                 return this.processArray(gallery);
             }).catch(err => {
                 return err;
             })
-            const imageMapper = new ImageMapper();
-            for (let gallery of galleries) {
-                gallery.images = await imageMapper.getImagesByGalleryId(gallery.id);
-                globalGallery.push(gallery);
-            }
 
-            return globalGallery;
+            if (options.image.primary) {
+                for (let gallery of galleries) {
+                    gallery.images = await imageMapper.getPrimaryImageByGalleryId(gallery.id);
+                    globalGallery.push(gallery);
+                }
+                return globalGallery;
+            } else {
+
+                galleries[0].images = await imageMapper.getImagesByGalleryId(options.gallery.id);
+                return galleries;
+            }
         } catch (error) {
 
             return error.toString();

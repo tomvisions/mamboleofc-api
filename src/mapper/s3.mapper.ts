@@ -148,3 +148,5 @@ export class S3Mapper {
         return `${Buffer.from(imageRequest).toString('base64')}`;
     }
 }
+
+export const s3Mapper = new S3Mapper();

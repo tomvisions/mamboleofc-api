@@ -1,5 +1,5 @@
 "use strict";
-import {S3Mapper} from "../mapper/s3.mapper";
+import {s3Mapper} from "../mapper/s3.mapper";
 
 const {DataTypes, Model,sequelize} =  require('../db');
 
@@ -17,18 +17,28 @@ Image.init({
         type: DataTypes.STRING,
         get(this: Image): string {
             const rawValue = this.getDataValue('file');
-            const s3Mapper = new S3Mapper();
-            const signature = s3Mapper.resizeWithInS3(rawValue, {
+            const signatureSmall = s3Mapper.resizeWithInS3(rawValue, {
                 "resize": {
-                    "width": 130,
-                    "height": 130,
-                    "fit": "cover"
+                    "width": 200,
+                    "height": 200,
+                    "fit": "inside"
                 }
             });
 
-            return `${this.PARAM_FRONTCLOUD}/${signature}`;
+            const signatureOriginal = s3Mapper.resizeWithInS3(rawValue, {
+                "resize": {
+                    "height": 600,
+                    "fit": "inside"
+                }
+            });
+
+            return JSON.parse(`{
+            "small":"${Image.PARAM_FRONTCLOUD}/${signatureSmall}", 
+            "original":"${Image.PARAM_FRONTCLOUD}/${signatureOriginal}"
+            }`);
         },
     },
+
     image_type: {
         type: DataTypes.STRING,
     },
