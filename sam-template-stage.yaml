@@ -36,7 +36,7 @@ Globals:
   Function:
     Environment:
       Variables:
-        NodeEnv: ${NodeEnv}
+        NodeEnv: { "Ref" : "NodeEnv" }
 
 Conditions:
   UseDomainName:
