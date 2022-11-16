@@ -43,7 +43,7 @@ let options;
 
 if (process.env.NODE_ENV === 'dev') {
     options = {host: '127.0.0.1', dialect: 'mysql', port:3306}
-} else if ( process.env.NODE_ENV === 'staging') {
+} else if ( process.env.NODE_ENV === 'stage') {
     options = {host: process.env.HOST, dialect: 'mysql', port:33306}
 } else {
     options = {host: process.env.HOST, dialect: 'mysql', port:33306}
