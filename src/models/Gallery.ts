@@ -12,6 +12,9 @@ Gallery.init({
     name: {
         type: DataTypes.STRING,
     },
+    date: {
+        type: DataTypes.DATE,
+    },
     createdAt: {
         type: DataTypes.DATE,
     },
@@ -21,7 +24,5 @@ Gallery.init({
 }, {
     modelName: 'Gallery', sequelize: sequelize, tableName:"gallery"
 });
-
-//Gallery.Image = Image.belongsTo(Image,  {foreignKey: 'gallery', onUpdate: 'cascade'});
 
 export {Gallery}

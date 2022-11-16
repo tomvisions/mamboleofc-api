@@ -40,7 +40,6 @@ export class SequelizeApi {
 }
 
 let options;
-
 if (process.env.NODE_ENV === 'dev') {
     options = {host: '127.0.0.1', dialect: 'mysql', port:3306}
 } else if ( process.env.NODE_ENV === 'stage') {
@@ -48,11 +47,6 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     options = {host: process.env.DB_HOST, dialect: 'mysql', port:33306}
 }
-console.log('more dedicated');
-console.log(process.env);
-console.log('the options');
-console.log(options);
-
 
 let sequelizeClass = new SequelizeApi(process.env.DATABASE, process.env.USERNAME,process.env.PASSWORD, options );//.initialize();
 let sequelize = sequelizeClass.initialize();
