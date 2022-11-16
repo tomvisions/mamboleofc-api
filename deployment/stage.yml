@@ -1,5 +1,11 @@
 version: 0.2
-
+env:
+  variables:
+    HOST: $HOST
+    USERNAME: $USERNAME
+    PASSWORD: $PASSWORD
+    DATABASE: $DATABASE
+    TOKEN_SECRET: $TOKEN_SECRET
 phases:
   install:
     commands:
@@ -15,6 +21,7 @@ phases:
 #      - npm install babel-plugin-transform-runtime --save
 #      - npm install babel-preset-env --save
       - npm install
+      -
   build:
     commands:
       - npm run deploy
