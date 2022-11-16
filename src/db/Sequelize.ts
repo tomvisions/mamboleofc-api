@@ -53,6 +53,9 @@ if (process.env.NODE_ENV === 'dev') {
 //console.log(process);
 console.log('more dedicated');
 console.log(process.env);
+console.log('the options');
+console.log(options);
+
 let sequelizeClass = new SequelizeApi(process.env.DATABASE, process.env.USERNAME,process.env.PASSWORD, options );//.initialize();
 let sequelize = sequelizeClass.initialize();
 
