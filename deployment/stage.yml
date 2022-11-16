@@ -1,7 +1,7 @@
 version: 0.2
 env:
   variables:
-    HOST: $HOST
+    DB_HOST: $DB_HOST
     USERNAME: $USERNAME
     PASSWORD: $PASSWORD
     DATABASE: $DATABASE
