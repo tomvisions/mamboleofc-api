@@ -14,8 +14,6 @@ phases:
       - git config --global credential.UseHttpPath true
   pre_build:
     commands:
-      - echo $NODE_ENV
-      - echo $HOST
       - echo Logging in to Amazon ECR...
       - aws --version
       - sam --version
