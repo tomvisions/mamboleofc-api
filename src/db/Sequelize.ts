@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     options = {host: process.env.HOST, dialect: 'mysql', port:33306}
 }
-
+console.log('start');
 console.log('testing');
 console.log(process);
 console.log('more dedicated');
