@@ -36,7 +36,12 @@ Globals:
   Function:
     Environment:
       Variables:
-        NodeEnv: { "Ref" : "NodeEnv" }
+        NODE_ENV: { "Ref" : "NodeEnv" }
+        DB_HOST: { "Ref" : "DbHost" }
+        USER_NAME: { "Ref" : "UserName" }
+        PASSWORD:  { "Ref" : "Password" }
+        DATABASE: { "Ref" : "DataBase" }
+        TOKEN_SECRET: { "Ref" : "TokenSecret" }
 
 Conditions:
   UseDomainName:
