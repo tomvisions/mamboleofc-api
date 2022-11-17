@@ -6,9 +6,9 @@ export interface QueryWhere {
 
 export class EventController {
     public static async apiGetEvents(req: any, res: any, next: any) {
-        if (!eventMapper.checkAuthenication(req.headers.authorization)) {
-            return res.status(500).json({error: 'Not Authorized to access the API'})
-        }
+     //   if (!eventMapper.checkAuthenication(req.headers.authorization)) {
+       //     return res.status(500).json({error: 'Not Authorized to access the API'})
+       // }
 
 
         const queryWhere: QueryWhere = {};

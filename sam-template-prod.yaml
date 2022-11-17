@@ -7,6 +7,41 @@ Parameters:
     Type: String
     Description: API Domain name
     Default: 'api.mamboleofc.ca'
+  NodeEnv:
+    Type: String
+    Description: Node environment to use
+    Default: ${NodeEnv}
+  DbHost:
+    Type: String
+    Description: DbHost
+    Default: $DbHost
+  UserName:
+    Type: String
+    Description: The UserName
+    Default: $UserName
+  Password:
+    Type: String
+    Description: The password
+    Default: $Password
+  DataBase:
+    Type: String
+    Description: The database
+    Default: $Database
+  TokenSecret:
+    Type: String
+    Description: The secret
+    Default: TokenSecret
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        NODE_ENV: { "Ref" : "NodeEnv" }
+        DB_HOST: { "Ref" : "DbHost" }
+        USERNAME: { "Ref" : "UserName" }
+        PASSWORD:  { "Ref" : "Password" }
+        DATABASE: { "Ref" : "DataBase" }
+        TOKEN_SECRET: { "Ref" : "TokenSecret" }
 
 Conditions:
   UseDomainName:
