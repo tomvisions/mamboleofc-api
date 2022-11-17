@@ -145,10 +145,6 @@ Resources:
             Path: /api/v1/access
             Method: ANY
 
-      Policies:
-        - SESBulkTemplatedCrudPolicy:
-            IdentityName: arn:aws:ses:us-east-1:955552760689:identity/mamboleofc.ca
-
   MyApiCertificate:
     Type: 'AWS::CertificateManager::Certificate'
     Condition: UseDomainName
