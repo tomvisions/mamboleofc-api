@@ -148,6 +148,8 @@ Resources:
       Policies:
         - SESBulkTemplatedCrudPolicy:
             IdentityName: mamboleofc.ca
+        - SESEmailTemplateCrudPolicy:
+            Resource: *
   MyApiCertificate:
     Type: 'AWS::CertificateManager::Certificate'
     Condition: UseDomainName
