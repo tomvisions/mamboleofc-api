@@ -148,7 +148,7 @@ Resources:
       Policies:
         - SESBulkTemplatedCrudPolicy:
             IdentityName: arn:aws:ses:us-east-1:955552760689:identity/mamboleofc.ca
-            TemplateName: arn:aws:ses:us-east-1:955552760689:template/ContactUs
+
   MyApiCertificate:
     Type: 'AWS::CertificateManager::Certificate'
     Condition: UseDomainName
