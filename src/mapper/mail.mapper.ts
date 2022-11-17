@@ -50,7 +50,7 @@ export class MailMapper {
         switch (this._emailType) {
             case "contact-us":
                 this._params.Destination.ToAddresses.push('tcruicksh@gmail.com');
-                this._params.Destination.ToAddresses.push('mamboleofc@gmail.com');
+   //             this._params.Destination.ToAddresses.push('mamboleofc@gmail.com');
                 this._params.Source = 'admin@mamboleofc.ca';
                 this._params.ReplyToAddresses = [];
                 this._params.Template = 'ContactUs';
