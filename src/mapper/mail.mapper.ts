@@ -14,7 +14,6 @@ export interface Params {
 export class MailMapper {
     private _sesClient;
     private _REGION: string = 'us-east-1'
-    private _to: string;
     private _body: string;
     private _subject: string;
     private _emailType: string;
@@ -25,7 +24,6 @@ export class MailMapper {
     private _SUBJECT_CONTENT;
     private _HTML_CONTENT;
     private _TEXT_CONTENT;
-    private _NAME_CONTENT;
     private _PARAMS_EMAIL: string = 'email';
     private _PARAMS_EMAIL_TYPE: string = 'email_type';
     private _PARAMS_BODY: string = 'body';
@@ -71,89 +69,14 @@ export class MailMapper {
 
     }
 
-    async genereateParmams() {
-        var params = {
-            Destination: { /* required */
-                CcAddresses: [
-                    'EMAIL_ADDRESS',
-                    /* more items */
-                ],
-                ToAddresses: [
-                    'EMAIL_ADDRESS',
-                    /* more items */
-                ]
-            },
-            Message: { /* required */
-                Body: { /* required */
-                    Html: {
-                        Charset: "UTF-8",
-                        Data: "HTML_FORMAT_BODY"
-                    },
-                    Text: {
-                        Charset: "UTF-8",
-                        Data: "TEXT_FORMAT_BODY"
-                    }
-                },
-                Subject: {
-                    Charset: 'UTF-8',
-                    Data: 'Test email'
-                }
-            },
-            Source: 'SENDER_EMAIL_ADDRESS', /* required */
-            ReplyToAddresses: [
-                'EMAIL_ADDRESS',
-                /* more items */
-            ],
-        };
-    }
-
     async getContactUsEmail() {
         this._SUBJECT_CONTENT = format(EmailMessaging.CONTACTUS_SUBJECT,  this._subject)
         this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML,  this._body);
         this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT, this._body);
-    //    console.log(this.HTML_CONTENT);
-
     }
 
     async apiSendMail() {
-   //     try {
-
-            // Create sendEmail params
-        //    return JSON.stringify(this.params);
-          //  return new SendTemplatedEmailCommand(this.params);
-      //  const test = new SESClient({'region': this.REGION});
-  //      this.params.Message.Body.Html.Data = 'HTML_FORMAT_BODY';
-    //    console.log(this.params);
-     //   console.log(this.params.Message.Body)
-        const params = {
-            Destination: {
-                /* required */
-                CcAddresses: [
-                    /* more items */
-                ],
-                ToAddresses: [
-                    "tcruicksh@gmail.com", //RECEIVER_ADDRESS
-                    /* more To-email addresses */
-                ],
-            },
-            Source: "tomc@tomvisions.com", // SENDER_ADDRESS
-            ReplyToAddresses: [
-                /* more items */
-            ],
-            Template: "ContactUs",
-            TemplateData: "{\"subjectLine\":\"testing\",\"name\":\"tom\",\"HTMLCONTENT\":\"hello\",\"TEXTCONTENT\":\"goodbye\"}"
-        };
-  //      console.log(this.params);
-          return await this._sesClient.send(new SendTemplatedEmailCommand(this._params));
-       // console.log("Success", boo);
-          //  console.log("Success.", data);
-           // return data; // For unit tests.
-     //   } catch (err) {
-
-       //     return false;
-//                console.log("Error", err);
-
-   //     }
+         return await this._sesClient.send(new SendTemplatedEmailCommand(this._params));
     }
 
     get PARAMS_PHONE(): string {
