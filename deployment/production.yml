@@ -19,6 +19,7 @@ phases:
       - sam --version
       - ln -s package.prod.json package.json
       - npm install
+      - npm install --global cross-env
   build:
     commands:
       - npm run deploy
