@@ -102,6 +102,30 @@ Resources:
             RestApiId: !Ref ExpressApi
             Path: /api/v1/user/sign-up
             Method: ANY
+        UserAvatar:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /api/v1/user/avatar
+            Method: ANY
+        Gallery:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /api/v1/gallery
+            Method: ANY
+        GalleryImage:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /api/v1/gallery/image
+            Method: ANY
+        GalleryImages:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /api/v1/gallery/images
+            Method: ANY
         Mail:
           Type: Api
           Properties:
