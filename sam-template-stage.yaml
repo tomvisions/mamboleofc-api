@@ -146,8 +146,9 @@ Resources:
             Method: ANY
 
       Policies:
-        - SESBulkTemplatedCrudPolicy: {}
+        - SESBulkTemplatedCrudPolicy:
             IdentityName: mamboleofc.ca
+        - SESEmailTemplateCrudPolicy: {}
 
 
   MyApiCertificate:
