@@ -67,7 +67,8 @@ Resources:
       Timeout: 30
       Policies:
         - SESBulkTemplatedCrudPolicy:
-            IdentityName: arn:aws:ses:us-east-1:955552760689:identity/mamboleofc.ca
+            IdentityName: mamboleofc.ca
+        - SESEmailTemplateCrudPolicy: {}
         - KMSDecryptPolicy:
             KeyId: arn:aws:kms:us-east-1:955552760689:key/5d33b722-8a2b-4ff6-998a-7c396bfd40d7
       Events:
