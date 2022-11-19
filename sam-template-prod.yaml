@@ -6,7 +6,7 @@ Parameters:
   DomainName:
     Type: String
     Description: API Domain name
-    Default: 'api.mamboleofc.ca'
+    Default: $DomainName
   NodeEnv:
     Type: String
     Description: Node environment to use
