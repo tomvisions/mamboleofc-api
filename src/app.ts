@@ -6,7 +6,9 @@ import { getCurrentInvoke } from "@vendia/serverless-express";
 const ejs = require("ejs").__express;
 const app = express();
 const router = express.Router();
-import {userRouter, teamRouter, gameRouter, mailRouter, eventRouter, mediaRouter, rosterRouter, accessRouter} from './routes';
+import {userRouter, teamRouter, gameRouter, mailRouter, eventRouter, mediaRouter, rosterRouter, accessRouter, pageRouter} from './routes';
+
+
 const fileUpload = require('express-fileupload');
 import bodyparser from 'body-parser';
 
@@ -27,14 +29,18 @@ app.use(async (req, res, next) => {
 });
 
 
+
 app.use("/api/v1/team", teamRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/gallery", mediaRouter);
 app.use("/api/v1/game", gameRouter);
 app.use("/api/v1/mail", mailRouter);
 app.use("/api/v1/event", eventRouter);
 app.use("/api/v1/gallery", mediaRouter);
 app.use("/api/v1/roster", rosterRouter);
 app.use("/api/v1/access", accessRouter);
+app.use("/api/v1/page", pageRouter);
+
 
 app.use("/", express);
 export { app };

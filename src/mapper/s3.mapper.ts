@@ -1,6 +1,8 @@
-import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3";
+import {S3Client, PutObjectCommand, ListObjectsCommand} from "@aws-sdk/client-s3";
 import fs, {existsSync} from "fs";
+import {User} from "../models";
 const sizeOf = require('image-size');
+import * as uuid from 'uuid';
 
 export interface FileProperties {
     content_type?: string;
@@ -28,6 +30,27 @@ export class S3Mapper {
         }
 
         this._client = new S3Client(options);
+    }
+
+    /**
+     *
+     * @param imageBased64
+     * @param s3PrePath
+     * @param identifier
+     */
+    async upload(imageBase64: string, s3PrePath: string, identifier: string) {
+        let fileProperties: FileProperties;
+        try {
+            const id = uuid.v4();
+            await this.generatePrePath(`/tmp/${s3PrePath}`);
+            fileProperties = await this.getImageReadyForUpload(`${s3PrePath}${identifier}`, imageBase64);
+
+            return `${s3PrePath}${identifier}.${fileProperties.extension}`;
+
+        } catch (error) {
+            //   return {results: "error", message: error.toString()}
+            return {result: "error", message: error.toString()}
+        }
     }
 
     /**
@@ -125,7 +148,7 @@ export class S3Mapper {
                 ContentType: contentType,
                 Body: fileStream
             };
-
+            console.log(params);
             return await this._client.send(new PutObjectCommand(params));
         } catch (error) {
             return error.toString();

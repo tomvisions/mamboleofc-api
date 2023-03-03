@@ -1,17 +1,25 @@
 "use strict";
 
-import {Event, User} from "../models/";
-import { or } from "../db";
+import {event as EventMongoose, EventOptions} from "../models";
+//import {event as EventMongoose} from '../models/mongoDB'
+//import { or } from "../db";
 import Base64 from 'crypto-js/enc-base64';
 import HmacSHA256 from 'crypto-js/hmac-sha256';
 import Utf8 from 'crypto-js/enc-utf8';
 import {BaseMapper} from ".";
+import * as uuid from 'uuid';
+import {FileProperties, s3Mapper} from "./s3.mapper";
 
-export class EventMapper extends BaseMapper{
+export class EventMapper extends BaseMapper {
     private _PARAMS_SLUG: string = 'slug';
     private _PARAMS_NAME: string = 'name';
+    private _PARAMS_LINK: string = 'link';
+    private _PARAMS_ABOUT: string = 'about';
+    private _PARAMS_BANNER_IMAGE: string = 'bannerImage';
     private _PARAMS_CONTENT: string = 'content';
+    private _PARAMS_NEW: string = 'new';
     private _PARAMS_DATE: string = 'date';
+    private _PARAMS_EVENT: string = 'event';
     private _LIST_NAME: string = 'events';
     private _DEFAULT_SORT: string = 'name';
 
@@ -30,15 +38,17 @@ export class EventMapper extends BaseMapper{
 
 //            const params = {};
 
-            const result = await Event.findAll(params).then(events => {
+            const result = await EventMongoose.find(params).then(events => {
+
+                console.log('getting event');
+                console.log(events);
                 if (events.length) {
-                    const eventArray = [];
-                    for (let event of events) {
-                        eventArray.push(event['dataValues']);
+
+                    if (events.length === 1) {
+                        return events[0];
                     }
 
-                    return eventArray;
-
+                    return events;
                 } else {
 
                     return false;
@@ -62,9 +72,36 @@ export class EventMapper extends BaseMapper{
 
     public async apiGetEvents(params = {}) : Promise <string[] | string> {
         try {
-            return await Event.findAll(params).then(event => {
-                return this.processArray(event)
+
+            return await EventMongoose.find(params).then(event => {
+                return event;
+//                return this.processArray(event)
                 }).catch (error => {
+
+                return error.toString();
+            });
+
+        } catch (error) {
+            console.log(error);
+            return error.toString()
+        }
+    }
+
+    public async apiImportEvents(params) {
+        console.log('the params');
+        console.log(params);
+        try {
+            if ((await EventMongoose.find(params)).length === 0) {
+                console.log('about to enter');
+                console.log(params);
+
+
+                return await new EventMongoose(params).save();
+            }
+
+            return await EventMongoose.find(params).then(event => {
+                return this.processArray(event)
+            }).catch (error => {
                 return error.toString();
             });
 
@@ -74,9 +111,11 @@ export class EventMapper extends BaseMapper{
         }
     }
 
+
     public async apiUpdateGame(id, game) {
         try {
-            console.log('in mapper');
+            return true;
+/*            console.log('in mapper');
             console.log(game);
             console.log('dd');
             //   console.log(JSON.parse(game));
@@ -97,24 +136,17 @@ export class EventMapper extends BaseMapper{
             });
 
             return result;
-
+*/
         } catch (error) {
             console.log(`Could not update games ${error}`);
             return false;
         }
     }
 
-    /**
-     *
-     * @param body JSON
-     */
-    public async apiCreateEvent(body) {
+
+    public async apiCreateEvent() {
         try {
-            body.slug = body.name.replace(/\s+/g, '-').toLowerCase();
-            console.log('body');
-            console.log(body);
-            const result = await Event.create(
-                body
+            const test = await EventMongoose.create({identifier: uuid.v4()}
             ).then(data => {
                 console.log('good stuff');
                 return data;
@@ -122,6 +154,61 @@ export class EventMapper extends BaseMapper{
             }).catch(data => {
                 console.log('bad stuff');
                 console.log(data);
+                return false;
+            });
+            console.log('the test');
+            console.log(test);
+            return test;
+
+        } catch (error) {
+            console.log(`Could not create event ${error}`);
+            return false;
+        }
+    }
+
+    /**
+     * @param identifier
+     * @param event JSON
+     */
+    public async apiUpdateEvent(identifier, event) {
+        let fileProperties: FileProperties;
+
+        try {
+
+            console.log('the event');
+            console.log(event);
+            console.log('about image');
+            console.log(event.aboutImage);
+            event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
+
+            if (event.bannerImage.includes('data:image')) {
+                event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/',`banner-image-${identifier}`);
+            }
+
+            if (event.aboutImage.includes('data:image')) {
+                console.log('detected about');
+                event.aboutImage = await s3Mapper.upload(event.aboutImage, 'mamboleofc/events/',`about-image-${identifier}`);
+            }
+
+            if (event.contentImage.includes('data:image')) {
+                console.log('detected about');
+                event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/',`content-image-${identifier}`);
+            }
+
+            console.log('the final load');
+            console.log(event);
+            //           await this.generatePrePath('/tmp/mamboleofc/avatars');
+   //         fileProperties = await this.getImageReadyForUpload(`mamboleofc/events/banner-image-${identifier}`, event['bannerImage']);
+
+       ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
+
+
+
+            const result = await EventMongoose.update(event, {where: {identifier: identifier}}).then(data => {
+                console.log('good stuff');
+                return data;
+            }).catch(data => {
+                console.log('did not happen');
                 return false;
             });
 
@@ -199,7 +286,7 @@ export class EventMapper extends BaseMapper{
         // Return the base64 encoded string
         return encodedSource;
     }
-    
+
     get PARAMS_SLUG(): string {
         return this._PARAMS_SLUG;
     }
@@ -222,6 +309,27 @@ export class EventMapper extends BaseMapper{
 
     get DEFAULT_SORT(): string {
         return this._DEFAULT_SORT;
+    }
+
+
+    get PARAMS_NEW(): string {
+        return this._PARAMS_NEW;
+    }
+
+    get PARAMS_LINK(): string {
+        return this._PARAMS_LINK;
+    }
+
+    get PARAMS_ABOUT(): string {
+        return this._PARAMS_ABOUT;
+    }
+
+    get PARAMS_BANNER_IMAGE(): string {
+        return this._PARAMS_BANNER_IMAGE;
+    }
+
+    get PARAMS_EVENT(): string {
+        return this._PARAMS_EVENT;
     }
 }
 

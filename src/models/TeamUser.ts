@@ -4,7 +4,7 @@
 //const {Model, or, DataTypes} = require("sequelize");
 const {DataTypes, Model} = require("sequelize");
 const {sequelize} = require("../db/Sequelize");
-//const Team = require("tomvisions-model");
+
 //const modelInit = generateInitObject(new Team.Team());
 
 class TeamUser extends Model {}

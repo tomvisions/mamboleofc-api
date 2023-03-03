@@ -51,6 +51,9 @@ export class BaseMapper {
     public generatePagination(list:string[], query: Query = {}) : PaginationResults {
         let listClone;
         listClone = list;
+        console.log('the list');
+        console.log(list);
+        console.log(query);
 
         const search = query.search || null;
         const sort = query.sort || this['DEFAULT_SORT']
@@ -58,7 +61,7 @@ export class BaseMapper {
         const page = query.page || 1;
         const size = query.size || 10;
 
-        if (sort === 'id' || sort === query.sort)
+        if (sort === 'identifier' || sort === query.sort)
         {
             listClone.sort((a, b) => {
 

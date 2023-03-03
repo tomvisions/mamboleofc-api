@@ -1,7 +1,7 @@
 import {readFileSync} from "fs";
 import {FileProperties, S3Mapper} from "./s3.mapper";
 import {PutObjectCommand} from '.';
-import {Image, User} from "../models";
+import {User} from "../models/";
 
 import * as uuid from 'uuid';
 

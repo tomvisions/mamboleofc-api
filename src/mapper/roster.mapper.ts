@@ -1,15 +1,16 @@
 "use strict";
 
-import {Roster } from "../models/";
+import {Roster} from "../models/";
 import Base64 from 'crypto-js/enc-base64';
 import HmacSHA256 from 'crypto-js/hmac-sha256';
 import Utf8 from 'crypto-js/enc-utf8';
 import {BaseMapper} from "./base.mapper";
 
 export class RosterMapper extends BaseMapper{
-    private _PARAMS_GAME: string = 'game';
-    private _PARAMS_USER: string = 'user';
-
+    private _PARAMS_GAME: string = 'gameId';
+    private _PARAMS_USER: string = 'userId';
+    private _PARAMS_ROSTER: string = 'id';
+    private _LIST_NAME: string = 'roster';
 
     public async apiGetRoster(params = {}) {
         try {
@@ -115,6 +116,11 @@ export class RosterMapper extends BaseMapper{
 
     get PARAMS_USER(): string {
         return this._PARAMS_USER;
+    }
+
+
+    get PARAMS_ROSTER(): string {
+        return this._PARAMS_ROSTER;
     }
 }
 
