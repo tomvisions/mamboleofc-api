@@ -1,7 +1,7 @@
 "use strict";
 import {BaseMapper} from "./base.mapper";
 
-import {Access, Gallery, TeamUser, User} from "../models";
+import {Access, TeamUser, User} from "../models";
 //import { User} from "../models";
 import {or} from "../db";
 import dotenv from 'dotenv';

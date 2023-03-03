@@ -23,9 +23,9 @@ export class TeamController {
 
     public static async apiGetTeams(req:any, res:any, next:any) {
         try {
-            if (!teamMapper.checkAuthenication(req.headers.authorization)) {
-                return res.status(500).json({error: 'Not Authorized to access the API'})
-            }
+       //     if (!teamMapper.checkAuthenication(req.headers.authorization)) {
+         //       return res.status(500).json({error: 'Not Authorized to access the API'})
+         //   }
 
 
             const teams = await teamMapper.apiGetTeams();

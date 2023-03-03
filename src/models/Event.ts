@@ -1,39 +1,58 @@
-const {DataTypes, Model, sequelize} = require('../db');
+import {Schema} from "mongoose";
+import {mongoose} from "../db/Mongoose";
 
-class Event extends Model {}
+export interface EventOptions {
+    name: String,
+    content: String,
+    slug: String,
+    date: Date,
+    createdAt: Date,
+    updatedAt: Date,
+    image: String,
+}
 
-Event.init({
-    id: {
-        type: DataTypes.STRING,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    name: {
-        type: DataTypes.STRING,
-    },
-    content: {
-        type: DataTypes.STRING,
-    },
-    slug: {
-        type: DataTypes.STRING,
-    },
-    date: {
-        type: DataTypes.DATE,
-    },
-    createdAt: {
-        type: DataTypes.DATE,
-    },
-    updatedAt: {
-        type: DataTypes.DATE,
-    },
-    image: {
-        type: DataTypes.STRING,
-    },
 
-}, {
-    modelName: 'Event', sequelize: sequelize, tableName:"event"
-})
+class Event {
+
+
+    public static eventSchema = new Schema({
+        name: {
+            type:  Schema.Types.String,
+        },
+        content: {
+            type:  Schema.Types.String,
+        },
+        slug: {
+            type:  Schema.Types.String,
+        },
+        date: {
+            type: Schema.Types.Date,
+        },
+        createdAt: {
+            type: Schema.Types.Date,
+        },
+        updatedAt: {
+            type: Schema.Types.Date,
+        },
+        identifier: {
+            type: Schema.Types.String,
+        },
+        contentImage: {
+            type: Schema.Types.String,
+        },
+        about: {
+            type: Schema.Types.String,
+        },
+        aboutImage: {
+            type: Schema.Types.String,
+        },
+        bannerImage: {
+            type: Schema.Types.String,
+        },
+    })
+}
+
+export const event = mongoose.model('Event', Event.eventSchema);
+
 
 //Game.TeamModel = Game.belongsTo(TeamModel,  {foreignKey: 'team', onUpdate: 'cascade'});
-
-export {Event};

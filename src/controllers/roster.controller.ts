@@ -10,7 +10,8 @@ export class RosterController {
      */
     static async apiAddUserToRoster(req:any, res:any, next:any) {
         try {
-            if (req.body[rosterMapper.PARAMS_GAME] && req.body[rosterMapper.PARAMS_USER]) {
+            if (req.body[rosterMapper.PARAMS_GAME] && req.body[rosterMapper.PARAMS_USER] && req.body[rosterMapper.PARAMS_ROSTER]) {
+                console.log('yoot');
                 const team = await rosterMapper.apiAddUserToRoster(req.body);
 
                 return res.status(200).json(team);

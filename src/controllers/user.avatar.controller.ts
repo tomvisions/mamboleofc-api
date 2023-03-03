@@ -1,4 +1,4 @@
-import {userMapper, AvatarMapper} from "../mapper/";
+/*import {userMapper, AvatarMapper} from "../mapper/";
 import multer from 'multer';
 
 export class UserAvatarController {
@@ -25,7 +25,7 @@ export class UserAvatarController {
                 })
             }
             const params = JSON.parse(`{"id":${req.body.id}, "user": ${req.body.user}}`);
-            await userMapper.apiUpdateUser(params);
+         //   await userMapper.apiUpdateUser(params);
             const avatarMapper = new AvatarMapper();
             await avatarMapper.uploadAvatar(req.body);
 
@@ -33,3 +33,4 @@ export class UserAvatarController {
         });
     }
 }
+*/

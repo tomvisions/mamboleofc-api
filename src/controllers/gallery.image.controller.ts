@@ -1,35 +1,13 @@
 import multer from 'multer';
-import {ImageMapper} from '../mapper/';
+import {imageMapper} from '../mapper/';
 
 export class GalleryImageController {
 
     static async apiUploadImage(req: any, res: any, next: any) {
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, "/tmp");
-            },
-            filename: (req, file, cb) => {
-                cb(null, `${file.originalname}`); //Appending extension
-            },
-        });
-        const upload = multer({
-            storage: storage,
-            preservePath: true,
-            limits: { fieldSize: 25 * 1024 * 1024 }
-        }).single('file');
 
-        upload(req, res, async (error) => {
-            if (error) {
-                return res.json({
-                    result: "error",
-                    message: error.toString()
-                })
-            }
+            await imageMapper.migrateImage(req.body);
+         //   return res.json({info1:req.body});
 
-            const imageMapper = new ImageMapper();
-            await imageMapper.uploadImage(req.body);
-            return res.json({info1:req.body});
-        });
     }
 
     static async apiUploadImages(req: any, res: any, next: any) {
@@ -52,7 +30,6 @@ export class GalleryImageController {
                 return res.json({error: err})
             }
 
-            const imageMapper = new ImageMapper();
             const retVal = await imageMapper.uploadImages(req.body);
 
 

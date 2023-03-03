@@ -132,6 +132,12 @@ Resources:
             RestApiId: !Ref ExpressApi
             Path: /api/v1/event
             Method: ANY
+        EventImport:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /api/v1/event/import
+            Method: ANY
         Roster:
           Type: Api
           Properties:
@@ -144,6 +150,12 @@ Resources:
             RestApiId: !Ref ExpressApi
             Path: /api/v1/access
             Method: ANY
+        About:
+            Type: Api
+            Properties:
+                RestApiId: !Ref ExpressApi
+                Path: /api/v1/about
+                Method: ANY
 
       Policies:
         - SESBulkTemplatedCrudPolicy:

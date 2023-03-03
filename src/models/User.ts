@@ -1,10 +1,10 @@
 const {DataTypes, Model} = require("sequelize");
-import {sequelize} from '../db/Sequelize';
+import {sequelize} from '../db/';
 import {Access, TeamUser} from '.';
 import {S3Mapper} from "../mapper/s3.mapper";
 
 class User extends Model {
-    static PARAM_FRONTCLOUD = 'https://d1rnutpibukanj.cloudfront.net'
+    static PARAM_FRONTCLOUD = 'https://images.mamboleofc.ca'
 
     private avatar:string;
 }
@@ -27,6 +27,10 @@ User.init({
     avatar: {
         get(this:User): string {
             const rawValue = this.getDataValue('avatar');
+            console.log('the avatar');
+            console.log(rawValue);
+            console.log('the url');
+            console.log(`${User.PARAM_FRONTCLOUD}`);
             const s3Mapper = new S3Mapper();
             const signature = s3Mapper.resizeWithInS3(rawValue, {
                 "resize": {
@@ -36,7 +40,7 @@ User.init({
                 }
             });
 
-            return `${this.PARAM_FRONTCLOUD}/${signature}`;
+            return `${User.PARAM_FRONTCLOUD}/${signature}`;
         },
         type: DataTypes.STRING,
     },

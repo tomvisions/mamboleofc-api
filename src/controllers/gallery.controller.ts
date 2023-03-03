@@ -17,8 +17,8 @@ export class GalleryController {
 
             if (req.query.primary === '1') {
                 options.image.primary = true;
-            } else if (req.query.gallery_id) {
-                options.gallery.id = req.query.gallery_id;
+            } else if (req.query.gallery_slug) {
+                options.gallery.slug = req.query.gallery_slug;
             }
 
             const galleries = await galleryMapper.getAllGalleries(options);
@@ -45,7 +45,10 @@ export class GalleryController {
      */
     public static async apiCreateGallery(req: any, res: any, next: any) {
         try {
+            console.log('start')
+            console.log(req.body);
             if (req.body[galleryMapper.PARAMS_ID] && req.body[galleryMapper.PARAMS_NAME]) {
+                console.log('past stuff');
                 const gallery = await galleryMapper.createGallery(req.body);
 
                 return res.status(200).json(gallery);

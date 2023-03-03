@@ -3,7 +3,7 @@
 import {FileProperties, S3Mapper} from "./s3.mapper";
 
 const moment = require('moment');
-import {Image} from "../models/";
+import {image as Image, user as User} from "../models/mongoDB/";
 import * as uuid from 'uuid';
 
 export class ImageMapper extends S3Mapper {
@@ -11,14 +11,12 @@ export class ImageMapper extends S3Mapper {
     async getImagesByGalleryId(galleryId: string = null) {
 
         try {
-            const paramsWhere = {
-                where: JSON.parse(`{
+            const paramsWhere = JSON.parse(`{
                     "gallery_id":"${galleryId}"
-                }`)
-            };
+                }`);
             console.log(paramsWhere);
-            return await Image.findAll(paramsWhere).then(images => {
-
+            return await Image.find(paramsWhere).then(images => {
+/*
                 const imageArray = [];
 
                 for (let image of images) {
@@ -26,7 +24,7 @@ export class ImageMapper extends S3Mapper {
                 }
 
 //                console.log(imageArray);
-                return imageArray;
+                return imageArray; */
             }).catch(err => {
                 return err;
             })
@@ -43,15 +41,15 @@ export class ImageMapper extends S3Mapper {
                     "primary":1 
                 }`)
             };
-            return await Image.findAll(paramsWhere).then(images => {
+            return await Image.find(paramsWhere).then(images => {
 
-                const imageArray = [];
+             /*   const imageArray = [];
 
                 for (let image of images) {
                     imageArray.push(image.get());
                 }
 
-                return imageArray;
+                return imageArray; */
             }).catch(err => {
                 return err;
             })
@@ -60,6 +58,27 @@ export class ImageMapper extends S3Mapper {
         }
     }
 
+    async migrateImage(body) {
+        try {
+            console.log('the body');
+            console.log(body);
+            if ((await Image.find({"id":body['id']})).length === 0) {
+                console.log('boo');
+             //   params.updatedAt = moment().format('YYYY-MM-DD')
+              //  params.createdAt = moment().format('YYYY-MM-DD')
+                return await new Image(body).save();
+            } else {
+                console.log(body);
+            }
+            return await Image.create(body).then(data => {
+                return data;
+            }).catch(err => {
+                return err;
+            })
+        } catch (error) {
+            console.log(`Could not fetch galleries ${error}`)
+        }
+    }
     async uploadImage(body) {
         try {
             let fileProperties: FileProperties

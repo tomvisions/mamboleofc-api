@@ -2,7 +2,7 @@
 const {DataTypes, Model} = require ("sequelize");
 const {sequelize} = require("../db/Sequelize");
 //import {TeamUser} from "./TeamUser";
-import {User} from "."
+import {User} from "./sequelize"
 //export const test = sequelize.define({
 
 //}).associations();
@@ -18,10 +18,10 @@ Roster.init({
         autoIncrement: true,
         primaryKey: true
     },
-    game_id: {
+    gameId: {
         type: DataTypes.INTEGER,
     },
-    user_id: {
+    userId: {
         type: DataTypes.INTEGER,
     },
     createdAt: {
@@ -34,6 +34,6 @@ Roster.init({
     modelName: 'Roster', sequelize: sequelize, tableName:"roster"
 });
 
-Roster.User = Roster.hasMany(User, {sourceKey:'user_id', foreignKey: 'id', onUpdate: 'cascade'});
+Roster.User = Roster.hasMany(User, {sourceKey:'userId', foreignKey: 'id', onUpdate: 'cascade'});
 
 export { Roster };

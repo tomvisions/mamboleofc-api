@@ -1,7 +1,9 @@
 "use strict";
 
-import {Gallery} from "../models/";
-import {BaseMapper, imageMapper} from '.';
+import {gallery as Gallery, image as Image} from "../models/";
+import {BaseMapper} from '.';
+import moment from "moment";
+import {hasSubscribers} from "diagnostics_channel";
 
 export interface Options {
     image?: ImageOptions,
@@ -13,7 +15,7 @@ export interface ImageOptions {
 }
 
 export interface GalleryOptions {
-    id?:string;
+    slug?:string;
 }
 
 
@@ -24,27 +26,35 @@ export class GalleryMapper extends BaseMapper {
     private _LIST_NAME: string = 'galleries';
 
 
-
     public async getAllGalleries(options: Options) { //: Promise<string[] | string> {
         try {
-            const globalGallery = [];
-            let paramsWhere = {};
+            let paramsWhere = {}
 
-            if  (options.gallery.id) {
-                paramsWhere = {
-                    where: JSON.parse(`{
-                    "id":"${options.gallery.id}"
+            if (options.gallery.slug) {
+                paramsWhere = JSON.parse(
+                   `{
+                    "slug":"${options.gallery.slug}"
                 }`)
-                }
+
+                return await Image.find(paramsWhere).then(images => {
+                    console.log(images);
+                    return images;
+                }).catch(err => {
+                    return err;
+                })
+
             }
 
-            const galleries = await Gallery.findAll(paramsWhere).then(gallery => {
+            console.log(paramsWhere);
+            return await Gallery.find(paramsWhere).then(galleries => {
 
-                return this.processArray(gallery);
+                return galleries;
             }).catch(err => {
                 return err;
             })
 
+          //  return galleries;
+/*
             if (options.image.primary) {
                 for (let gallery of galleries) {
                     gallery.images = await imageMapper.getPrimaryImageByGalleryId(gallery.id);
@@ -55,7 +65,7 @@ export class GalleryMapper extends BaseMapper {
 
                 galleries[0].images = await imageMapper.getImagesByGalleryId(options.gallery.id);
                 return galleries;
-            }
+            } */
         } catch (error) {
 
             return error.toString();
@@ -65,16 +75,27 @@ export class GalleryMapper extends BaseMapper {
 
     public async createGallery(gallery) {
         try {
-            return await Gallery.create(gallery).then(data => {
+            if ((await Gallery.find(gallery)).length === 0) {
+                console.log('about to enter');
+                console.log(gallery);
+                return await new Gallery(gallery).save();
+            }
 
-                return {'success': data.toString()}
-            }).catch(err => {
-                return {'error': err.toString()}
-            })
+            return {'error': "Entry already exists"}
+           //     console.log(await Gallery.find(gallery));
+
+
+//            return await Gallery.create(gallery).then(data => {
+
+            //      return {'success': data.toString()}
+            //   }).catch(err => {
+            //     return {'error': err.toString()}
+            //  })
         } catch (error) {
             return {'error': error.toString()}
         }
     }
+
 
     /*
         static async getGalleryWithImages(params) {
@@ -164,8 +185,8 @@ export class GalleryMapper extends BaseMapper {
                 console.log(`Could  ot delete article ${error}`);
             }
 
-        } */
-
+        }
+*/
 
     get DEFAULT_SORT(): string {
         return this._DEFAULT_SORT;
@@ -186,3 +207,4 @@ export class GalleryMapper extends BaseMapper {
 }
 
 export const galleryMapper = new GalleryMapper();
+
