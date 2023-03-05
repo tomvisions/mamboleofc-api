@@ -35,7 +35,7 @@ export class MongooseApi {
      */
     public initialize() {
         this._mongoose.connect(this._databaseName, options, data => {
-                console.log('connected')
+
             return data;
         });
         const db = this._mongoose.connection;

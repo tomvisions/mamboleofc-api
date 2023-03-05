@@ -10,7 +10,7 @@ export class EventController {
        //     return res.status(500).json({error: 'Not Authorized to access the API'})
        // }
 
-
+//        console.log('hello');
         const queryWhere: QueryWhere = {};
 
         if (req.query[eventMapper.PARAMS_SLUG]) {
@@ -24,11 +24,11 @@ export class EventController {
                 return res.status(200).json({result: "success", event});
         } else {
             const events = await eventMapper.apiGetEvents();
-            console.log(events);
+         //   console.log(events);
             if (typeof events === 'string') {
                 return res.status(500).json({error: events})
             }
-            console.log(req.query);
+       //     console.log(req.query);
            const paginationResults = eventMapper.prepareListResults(events,req.query);
 
             return res.status(200).json(paginationResults)

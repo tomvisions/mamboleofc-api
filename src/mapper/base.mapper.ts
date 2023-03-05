@@ -51,9 +51,9 @@ export class BaseMapper {
     public generatePagination(list:string[], query: Query = {}) : PaginationResults {
         let listClone;
         listClone = list;
-        console.log('the list');
-        console.log(list);
-        console.log(query);
+   //     console.log('the list');
+     //   console.log(list);
+     //   console.log(query);
 
         const search = query.search || null;
         const sort = query.sort || this['DEFAULT_SORT']

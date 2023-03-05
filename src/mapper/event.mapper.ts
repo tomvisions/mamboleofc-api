@@ -27,8 +27,8 @@ export class EventMapper extends BaseMapper {
 
         try {
 
-            console.log('get event');
-            console.log(queryWhere);
+//            console.log('get event');
+  //          console.log(queryWhere);
 
             const params = {
                 where: {
@@ -40,8 +40,8 @@ export class EventMapper extends BaseMapper {
 
             const result = await EventMongoose.find(params).then(events => {
 
-                console.log('getting event');
-                console.log(events);
+         //       console.log('getting event');
+           //     console.log(events);
                 if (events.length) {
 
                     if (events.length === 1) {
