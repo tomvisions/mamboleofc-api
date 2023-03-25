@@ -15,37 +15,16 @@ export interface PageOptions {
 class Page {
 
     public static pageSchema = new Schema({
-        name: {
+        title: {
             type:  Schema.Types.String,
         },
         content: {
-            type:  Schema.Types.String,
+            type:  Schema.Types.Array,
         },
         slug: {
             type:  Schema.Types.String,
         },
-        date: {
-            type: Schema.Types.Date,
-        },
-        createdAt: {
-            type: Schema.Types.Date,
-        },
-        updatedAt: {
-            type: Schema.Types.Date,
-        },
         identifier: {
-            type: Schema.Types.String,
-        },
-        contentImage: {
-            type: Schema.Types.String,
-        },
-        about: {
-            type: Schema.Types.String,
-        },
-        aboutImage: {
-            type: Schema.Types.String,
-        },
-        bannerImage: {
             type: Schema.Types.String,
         },
     })

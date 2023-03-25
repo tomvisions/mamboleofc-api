@@ -58,8 +58,9 @@ export class EventController {
 
     public static async apiUpdateEvents(req: any, res: any, next: any) {
         try {
-            if (req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_NAME] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_ABOUT] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_LINK] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_BANNER_IMAGE]) {
-
+      //      if (req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_NAME] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_ABOUT] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_LINK] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_BANNER_IMAGE]) {
+                console.log('the body');
+                console.log(req.body);
 
                 const event = await eventMapper.apiUpdateEvent(req.body.identifier, req.body.event);
 
@@ -68,9 +69,9 @@ export class EventController {
                 }
 
                 return res.status(200).json({result: "success", message: "Team has been created"});
-            }
+        //    }
 
-            return  res.status(500).json({result: "error", message: "Missing parameters to access this function"})
+          //  return  res.status(500).json({result: "error", message: "Missing parameters to access this function"})
 
         } catch (error) {
 

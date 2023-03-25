@@ -18,10 +18,10 @@ export class PageController {
             const page = await pageMapper.apiGetPage(queryWhere);
 
             if (!page) {
-                return res.status(500).json({error: "Unable to retrieve event"})
+                return res.status(500).json({error: "Unable to retrieve page"})
             }
 
-            return res.status(200).json({result: "success", event});
+            return res.status(200).json({result: "success", page});
         } else {
             const page = await pageMapper.apiGetPages();
             console.log('the sthi');
@@ -44,7 +44,7 @@ export class PageController {
                 const event = await pageMapper.apiCreatePage();
 
                 if (!event) {
-                    return res.status(500).json({error: "Error creating Event"})
+                    return res.status(500).json({error: "Error creating Page"})
                 }
 
                 return res.status(200).json({result: "success", message: event});
@@ -59,11 +59,12 @@ export class PageController {
     }
 
     public static async apiUpdatePage(req: any, res: any, next: any) {
-     /*   try {
-            if (req.body[pageMapper.PARAMS_EVENT][pageMapper.PARAMS_NAME] && req.body[pageMapper.PARAMS_EVENT][pageMapper.PARAMS_ABOUT] && req.body[pageMapper.PARAMS_EVENT][pageMapper.PARAMS_LINK] && req.body[pageMapper.PARAMS_EVENT][pageMapper.PARAMS_BANNER_IMAGE]) {
-
-
-                const event = await pageMapper.apiUpdateEvent(req.body.identifier, req.body.event);
+        try {
+            console.log('going');
+            console.log(req.body);
+            if (req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_CONTENT] && req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_TITLE] && req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_IDENTIFIER]) {
+                console.log('go go');
+                const event = await pageMapper.apiUpdatePage(req.body.identifier, req.body.page);
 
                 if (!event) {
                     return res.status(500).json({error: "Error Event already exists"})
@@ -77,7 +78,7 @@ export class PageController {
         } catch (error) {
 
             return res.status(500).json({error: error.toString()})
-        } */
+        }
     }
 
     public static async apiImportEvents(req: any, res: any, next: any) {

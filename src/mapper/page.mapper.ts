@@ -1,6 +1,6 @@
 "use strict";
 
-import {page as PageMongoose, EventOptions} from "../models";
+import {page as PageMongoose, EventOptions, event as EventMongoose} from "../models";
 //import {event as PageMongoose} from '../models/mongoDB'
 //import { or } from "../db";
 import Base64 from 'crypto-js/enc-base64';
@@ -13,9 +13,15 @@ import {FileProperties, s3Mapper} from "./s3.mapper";
 export class PageMapper extends BaseMapper {
     private _PARAMS_BANNER_IMAGE: string = 'bannerImage';
     private _PARAMS_CONTENT: string = 'content';
+    private _PARAMS_TITLE: string = 'title';
+    private _PARAMS_IDENTIFIER: string = 'identifier';
+
+
     private _PARAMS_ABOUT_IMAGE: string = 'aboutImage';
     private _PARAMS_SLUG: string = 'slug';
     private _PARAMS_NEW: string = 'new';
+    private _PARAMS_PAGE: string = 'page';
+
     private _LIST_NAME: string = 'pages';
 
     public async apiGetPage(queryWhere = {}) {
@@ -25,14 +31,15 @@ export class PageMapper extends BaseMapper {
             console.log('get event');
             console.log(queryWhere);
 
-            const params = {
-                where: {
+            const params =
+                 {
                     slug:queryWhere['slug'],
                 }
-            };
+
 
 //            const params = {};
-
+            console.log('the params');
+            console.log(params);
             const result = await PageMongoose.find(params).then(events => {
 
                 console.log('getting event');
@@ -42,6 +49,8 @@ export class PageMapper extends BaseMapper {
                     if (events.length === 1) {
                         return events[0];
                     }
+
+
 
                     return events;
                 } else {
@@ -136,18 +145,13 @@ export class PageMapper extends BaseMapper {
      * @param identifier
      * @param event JSON
      */
-    public async apiUpdatePage(identifier, event) {
+    public async apiUpdatePage(identifier, page) {
         let fileProperties: FileProperties;
 
         try {
+          //  event.slug = page.title.replace(/\s+/g, '-').toLowerCase();
 
-            console.log('the event');
-            console.log(event);
-            console.log('about image');
-            console.log(event.aboutImage);
-            event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
-
-            if (event.bannerImage.includes('data:image')) {
+/*            if (event.bannerImage.includes('data:image')) {
                 event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/',`banner-image-${identifier}`);
             }
 
@@ -159,25 +163,43 @@ export class PageMapper extends BaseMapper {
             if (event.contentImage.includes('data:image')) {
                 console.log('detected about');
                 event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/',`content-image-${identifier}`);
-            }
+            } */
 
-            console.log('the final load');
-            console.log(event);
+     //       console.log('the final load');
+       //     console.log(event);
             //           await this.generatePrePath('/tmp/mamboleofc/avatars');
             //         fileProperties = await this.getImageReadyForUpload(`mamboleofc/events/banner-image-${identifier}`, event['bannerImage']);
 
             ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
 
+            console.log('here is the input');
+            console.log('start page');
+            console.log(page);
+            console.log('end page');
+   //         console.log({"page":page.page, where: {where: {identifier: identifier}}});
+
+            const result = await PageMongoose.findOneAndUpdate({identifier: identifier}, page);
 
 
-            const result = await PageMongoose.update(event, {where: {identifier: identifier}}).then(data => {
+            /*.then(data => {
+                console.log('the ident');
+                console.log(identifier);
+                console.log('the input');
+                console.log(page);
+
+                console.log('the data');
+                console.log(data);
                 console.log('good stuff');
                 return data;
             }).catch(data => {
+                console.log('the data');
+                console.log(data);
                 console.log('did not happen');
                 return false;
             });
-
+*/
+            console.log('result');
+            console.log(result);
             return result;
 
         } catch (error) {
@@ -275,6 +297,18 @@ export class PageMapper extends BaseMapper {
 
     get PARAMS_SLUG(): string {
         return this._PARAMS_SLUG;
+    }
+
+    get PARAMS_TITLE(): string {
+        return this._PARAMS_TITLE;
+    }
+
+    get PARAMS_IDENTIFIER(): string {
+        return this._PARAMS_IDENTIFIER;
+    }
+
+    get PARAMS_PAGE(): string {
+        return this._PARAMS_PAGE;
     }
 }
 

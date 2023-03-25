@@ -202,15 +202,12 @@ export class EventMapper extends BaseMapper {
 
        ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
 
+            console.log({where: {identifier: identifier}});
 
+            const result = await EventMongoose.findOneAndUpdate({identifier: identifier}, event);
 
-            const result = await EventMongoose.update(event, {where: {identifier: identifier}}).then(data => {
-                console.log('good stuff');
-                return data;
-            }).catch(data => {
-                console.log('did not happen');
-                return false;
-            });
+            console.log('result');
+            console.log(result);
 
             return result;
 
