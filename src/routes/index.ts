@@ -7,3 +7,4 @@ export {eventRouter} from './event.routes';
 export {rosterRouter} from './roster.routes';
 export {accessRouter} from './access.routes';
 export {pageRouter} from './page.routes';
+export {deployRouter} from './deploy.routes';

@@ -6,6 +6,7 @@ pageRouter.post("/", PageController.apiCreatePage);
 pageRouter.patch("/", PageController.apiUpdatePage);
 
 pageRouter.get("/", PageController.apiGetPage);
+pageRouter.get("/", PageController.apiGetPage);
 
 //pageRouter.get("/import", PageController.apiImportEvents);
 

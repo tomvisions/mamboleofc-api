@@ -1,5 +1,5 @@
 import {Schema} from "mongoose";
-import {mongoose} from "../db/Mongoose";
+import {mongoose, mongooseLive} from "../db/Mongoose";
 
 export interface PageOptions {
     name: String,
@@ -29,8 +29,8 @@ class Page {
         },
     })
 }
-
 export const page = mongoose.model('Page', Page.pageSchema);
+export const pageLive = mongooseLive.model('Page', Page.pageSchema);
 
-
+//console.log(mongooseLive);
 //Game.TeamModel = Game.belongsTo(TeamModel,  {foreignKey: 'team', onUpdate: 'cascade'});

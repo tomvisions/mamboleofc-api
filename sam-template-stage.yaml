@@ -156,6 +156,12 @@ Resources:
                 RestApiId: !Ref ExpressApi
                 Path: /api/v1/about
                 Method: ANY
+        Deploy:
+            Type: Api
+            Properties:
+                RestApiId: !Ref ExpressApi
+                Path: /api/v1/deploy
+                Method: ANY
 
       Policies:
         - SESBulkTemplatedCrudPolicy:

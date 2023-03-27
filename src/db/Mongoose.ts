@@ -1,4 +1,4 @@
-import Mongoose, {Model, Schema } from 'mongoose';
+import Mongoose, {Connection, Model, Schema} from 'mongoose';
 import  {Sequelize, Dialect} from '.';
 import dotenv from "dotenv";
 dotenv.config();
@@ -16,7 +16,7 @@ export class MongooseApi {
     private _databaseName: string;
     private _options: OptionsMongoose;
     private _mongoose: typeof Mongoose;
-    private _database
+
     /**
      * Constructor for class
      * @param database
@@ -26,22 +26,35 @@ export class MongooseApi {
         this._databaseName = database;
         this._options = options;
         this._mongoose = Mongoose;
-
-
     }
 
     /**
      * Initialization function for sequelize
+     *
+     *
      */
-    public initialize() {
-        this._mongoose.connect(this._databaseName, options, data => {
+      public async initialize() {
+       const conn = this._mongoose.createConnection(this._databaseName, options);
 
-            return data;
-        });
-        const db = this._mongoose.connection;
-        db.on("error", console.error.bind(console, "MongoDB connection error:"));
+        return conn;
+       //await conn.readyState
 
-        return db;
+
+  //      console.log('testing');
+    //    console.log(conn);
+    //  const db = this._mongoose.connection;
+
+//      conn.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+  //    return  conn;
+ //     console.log(test);
+      //  return test;
+
+//        const db = this._mongoose.connection;
+  //      db.on("error", console.error.bind(console, "MongoDB connection error:"));
+      //  console.log(this._databaseName);
+      //  console.log(db);
+    //   return db;
 //        return new Mongoose(this._database, this._username, this._password, this._options);
     };
 }
@@ -56,6 +69,12 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 let mongooseClass = new MongooseApi(process.env.MONGO_DATABASE,  options );//.initialize();
-let mongoose = mongooseClass.initialize();
+let mongooseLiveClass = new MongooseApi(process.env.MONGO_LIVE_DATABASE,  options );//.initialize();
+//const mongoose =   mongooseClass.initialize();
+//const mongooseLive =  mongooseLiveClass.initialize();
 
-export {mongoose, Model, Schema};
+const mongoose = Mongoose.createConnection(process.env.MONGO_DATABASE, options);
+const mongooseLive = Mongoose.createConnection(process.env.MONGO_LIVE_DATABASE, options);
+
+//console.log(mongoose);
+export {mongoose, mongooseLive, Model, Schema};

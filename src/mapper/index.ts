@@ -9,3 +9,5 @@ export * from './team.mapper';
 export * from './mail.mapper';
 export * from './image.mapper';
 export * from './page.mapper';
+export * from './deploy.mapper';
+
