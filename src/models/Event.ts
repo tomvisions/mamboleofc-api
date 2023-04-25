@@ -1,5 +1,5 @@
 import {Schema} from "mongoose";
-import {mongoose} from "../db/Mongoose";
+import {mongoose, mongooseLive} from "../db/Mongoose";
 
 export interface EventOptions {
     name: String,
@@ -9,6 +9,7 @@ export interface EventOptions {
     createdAt: Date,
     updatedAt: Date,
     image: String,
+    intro: String,
 }
 
 
@@ -23,6 +24,9 @@ class Event {
             type:  Schema.Types.String,
         },
         slug: {
+            type:  Schema.Types.String,
+        },
+        intro: {
             type:  Schema.Types.String,
         },
         date: {
@@ -53,6 +57,7 @@ class Event {
 }
 
 export const event = mongoose.model('Event', Event.eventSchema);
+export const eventLive = mongooseLive.model('Event', Event.eventSchema);
 
 
 //Game.TeamModel = Game.belongsTo(TeamModel,  {foreignKey: 'team', onUpdate: 'cascade'});

@@ -20,6 +20,7 @@ export class EventMapper extends BaseMapper {
     private _PARAMS_NEW: string = 'new';
     private _PARAMS_DATE: string = 'date';
     private _PARAMS_EVENT: string = 'event';
+    private _PARAMS_IDENTIFIER: string = 'identifier';
     private _LIST_NAME: string = 'events';
     private _DEFAULT_SORT: string = 'name';
 
@@ -31,17 +32,13 @@ export class EventMapper extends BaseMapper {
   //          console.log(queryWhere);
 
             const params = {
-                where: {
-                    slug:queryWhere['slug'],
-                }
-            };
 
-//            const params = {};
+                    slug:queryWhere['slug'],
+
+            };
 
             const result = await EventMongoose.find(params).then(events => {
 
-         //       console.log('getting event');
-           //     console.log(events);
                 if (events.length) {
 
                     if (events.length === 1) {
@@ -175,10 +172,6 @@ export class EventMapper extends BaseMapper {
 
         try {
 
-            console.log('the event');
-            console.log(event);
-            console.log('about image');
-            console.log(event.aboutImage);
             event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
 
             if (event.bannerImage.includes('data:image')) {
@@ -195,19 +188,12 @@ export class EventMapper extends BaseMapper {
                 event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/',`content-image-${identifier}`);
             }
 
-            console.log('the final load');
-            console.log(event);
             //           await this.generatePrePath('/tmp/mamboleofc/avatars');
    //         fileProperties = await this.getImageReadyForUpload(`mamboleofc/events/banner-image-${identifier}`, event['bannerImage']);
 
        ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
 
-            console.log({where: {identifier: identifier}});
-
             const result = await EventMongoose.findOneAndUpdate({identifier: identifier}, event);
-
-            console.log('result');
-            console.log(result);
 
             return result;
 
@@ -327,6 +313,11 @@ export class EventMapper extends BaseMapper {
 
     get PARAMS_EVENT(): string {
         return this._PARAMS_EVENT;
+    }
+
+
+    get PARAMS_IDENTIFIER(): string {
+        return this._PARAMS_IDENTIFIER;
     }
 }
 

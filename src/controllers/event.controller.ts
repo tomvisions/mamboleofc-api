@@ -57,20 +57,25 @@ export class EventController {
     }
 
     public static async apiUpdateEvents(req: any, res: any, next: any) {
+        let event;
         try {
-      //      if (req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_NAME] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_ABOUT] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_LINK] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_BANNER_IMAGE]) {
-                console.log('the body');
-                console.log(req.body);
+            if (req.body[eventMapper.PARAMS_IDENTIFIER]) {
+                //      if (req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_NAME] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_ABOUT] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_LINK] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_BANNER_IMAGE]) {
 
-                const event = await eventMapper.apiUpdateEvent(req.body.identifier, req.body.event);
+                event = await eventMapper.apiUpdateEvent(req.body.identifier, req.body.event);
 
                 if (!event) {
                     return res.status(500).json({error: "Error Event already exists"})
                 }
+                const queryWhere: QueryWhere = {};
+                queryWhere.slug = req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_SLUG];
+                event = await eventMapper.apiGetEvent(queryWhere);
 
-                return res.status(200).json({result: "success", message: "Team has been created"});
-        //    }
-
+                return res.status(200).json({result: "success", message: "Event has been updated", data: event});
+                //    }
+            } else {
+                return  res.status(500).json({result: "error", message: "Missing parameters to access this function"})
+            }
           //  return  res.status(500).json({result: "error", message: "Missing parameters to access this function"})
 
         } catch (error) {
