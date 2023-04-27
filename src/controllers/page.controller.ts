@@ -1,4 +1,4 @@
-import {pageMapper} from "../mapper";
+import {eventMapper, pageMapper} from "../mapper";
 
 export interface QueryWhere {
     slug?:string;
@@ -62,15 +62,22 @@ export class PageController {
         try {
             console.log('going');
             console.log(req.body);
+            let page;
             if (req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_CONTENT] && req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_TITLE] && req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_IDENTIFIER]) {
                 console.log('go go');
-                const event = await pageMapper.apiUpdatePage(req.body.identifier, req.body.page);
+                page = await pageMapper.apiUpdatePage(req.body.identifier, req.body.page);
 
-                if (!event) {
-                    return res.status(500).json({error: "Error Event already exists"})
+                if (!page) {
+                    return res.status(500).json({error: "Error Page already exists"})
                 }
+                console.log(req.body);
+                const queryWhere: QueryWhere = {};
+                queryWhere.slug = req.body[pageMapper.PARAMS_PAGE][pageMapper.PARAMS_SLUG];
+                console.log('the slug');
+                console.log(queryWhere);
+                page = await pageMapper.apiGetPage(queryWhere);
 
-                return res.status(200).json({result: "success", message: "Team has been created"});
+                return res.status(200).json({result: "success", message: "Team has been created", data: page});
             }
 
             return  res.status(500).json({result: "error", message: "Missing parameters to access this function"})

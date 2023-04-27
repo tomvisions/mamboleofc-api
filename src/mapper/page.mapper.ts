@@ -28,7 +28,7 @@ export class PageMapper extends BaseMapper {
 
         try {
 
-            console.log('get event');
+            console.log('get slug');
             console.log(queryWhere);
 
             const params =
@@ -40,19 +40,19 @@ export class PageMapper extends BaseMapper {
 //            const params = {};
             console.log('the params');
             console.log(params);
-            const result = await PageMongoose.find(params).then(events => {
+            const result = await PageMongoose.find(params).then(page => {
 
-                console.log('getting event');
-                console.log(events);
-                if (events.length) {
+                console.log('getting page');
+                console.log(page);
+                if (page.length) {
 
-                    if (events.length === 1) {
-                        return events[0];
+                    if (page.length === 1) {
+                        return page[0];
                     }
 
 
 
-                    return events;
+                    return page;
                 } else {
 
                     return false;

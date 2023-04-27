@@ -1,6 +1,16 @@
 "use strict";
 
-import {page as PageMongoose, pageLive as PageMongooseLive, EventOptions, event as EventMongoose} from "../models";
+import {
+    page as PageMongoose,
+    pageLive as PageMongooseLive,
+    event as EventMongoose,
+    eventLive as EventMongooseLive,
+    image as ImageMongoose,
+    imageLive as ImageMongooseLive,
+    gallery as GalleryMongoose,
+    galleryLive as GalleryMongooseLive,
+    EventOptions
+} from "../models";
 //import {event as PageMongoose} from '../models/mongoDB'
 //import { or } from "../db";
 import Base64 from 'crypto-js/enc-base64';
@@ -18,43 +28,170 @@ export class DeployMapper extends BaseMapper {
 
     public async apiDeployChanges(section: string = null) {
 
-        try {
-            await PageMongoose.find().then( async page => {
-                console.log('arr');
-                    //      console.log('the page');
-                    for (let item of page) {
-                        console.log('the item');
-                 //       console.log(item);
-                        delete item._id;
-                        delete item.id
-                        const theItem = {};
+        switch (section) {
+            case "media":
+                await this.deployMedia();
+                break;
 
-                        theItem['content'] = item.content;
-                        theItem['identifier'] = item.identifier;
-                        theItem['slug'] = item.slug;
-                        theItem['title'] = item.title;
+            case "page":
+                await this.deployPage();
+                break;
+            case "event":
+                console.log('thw event');
+                await this.deployEvent();
+                break;
 
-                        console.log(item);
-                            const test =  await PageMongooseLive.create(theItem).then(data => {
-                                console.log('good stuff');
-                                console.log(data);
-                                return data;
+            default:
+                return false;
 
-                            }).catch(data => {
-                                console.log('bad stuff');
-                                console.log(data);
-                                return false;
-                            });
+        }
 
-                    }
+        return true;
+
+    }
+
+    async deployEvent() {
+
+        await EventMongoose.find().then(async page => {
+            console.log('arr');
+            //      console.log('the page');
+            for (let item of page) {
+                console.log('the item');
+                //       console.log(item);
+                delete item._id;
+                delete item.id
+                const theItem = {};
+
+                theItem['content'] = item.content;
+                theItem['about'] = item.about;
+                theItem['identifier'] = item.identifier;
+                theItem['slug'] = item.slug;
+                theItem['name'] = item.name;
+                theItem['createdAt'] = item.createdAt;
+                theItem['updatedAt'] = item.updatedAt;
+                theItem['aboutImage'] = item.aboutImage;
+                theItem['bannerImage'] = item.bannerImage;
+                theItem['intro'] = item.intro;
+                theItem['contentImage'] = item.contentImage;
+
+                console.log(item);
+                const test = await EventMongooseLive.create(theItem).then(data => {
+                    console.log('good stuff');
+                    console.log(data);
+                    return data;
+
+                }).catch(data => {
+                    console.log('bad stuff');
+                    console.log(data);
+                    return false;
                 });
 
-            return true;
+            }
+        });
 
-        } catch (error) {
-            console.log(`Could not find stuff`);
-            return false;
-        }
+        return true;
+
+    }
+
+    async deployMedia() {
+/*
+        await GalleryMongoose.find().then(async page => {
+            console.log('arr');
+            //      console.log('the page');
+            for (let item of page) {
+                console.log('the item');
+                //       console.log(item);
+                delete item._id;
+                delete item.id
+                const theItem = {};
+
+                theItem['slug'] = item.slug;
+                theItem['name'] = item.name;
+                theItem['date'] = item.date;
+                theItem['image'] = item.image;
+
+
+                console.log(item);
+                const test = await GalleryMongooseLive.create(theItem).then(data => {
+                    console.log('good stuff');
+                    console.log(data);
+                    return data;
+
+                }).catch(data => {
+                    console.log('bad stuff');
+                    console.log(data);
+                    return false;
+                });
+
+            }
+        });
+*/
+        await ImageMongoose.find().then(async page => {
+            console.log('arr');
+            //      console.log('the page');
+            for (let item of page) {
+                console.log('the item');
+                //       console.log(item);
+                delete item._id;
+                delete item.id
+                const theItem = {};
+
+                theItem['date'] = item.date;
+                theItem['images'] = item.images;
+                theItem['slug'] = item.slug;
+                theItem['name'] = item.name;
+
+                console.log(item);
+                const test = await ImageMongooseLive.create(theItem).then(data => {
+                    console.log('good stuff');
+                    console.log(data);
+                    return data;
+
+                }).catch(data => {
+                    console.log('bad stuff');
+                    console.log(data);
+                    return false;
+                });
+
+            }
+        });
+        return true;
+
+    }
+
+    async deployPage() {
+
+        await PageMongoose.find().then(async page => {
+            console.log('arr');
+            //      console.log('the page');
+            for (let item of page) {
+                console.log('the item');
+                //       console.log(item);
+                delete item._id;
+                delete item.id
+                const theItem = {};
+
+                theItem['content'] = item.content;
+                theItem['identifier'] = item.identifier;
+                theItem['slug'] = item.slug;
+                theItem['title'] = item.title;
+
+                console.log(item);
+                const test = await PageMongooseLive.create(theItem).then(data => {
+                    console.log('good stuff');
+                    console.log(data);
+                    return data;
+
+                }).catch(data => {
+                    console.log('bad stuff');
+                    console.log(data);
+                    return false;
+                });
+
+            }
+        });
+
+        return true;
 
     }
 
@@ -66,8 +203,7 @@ export class DeployMapper extends BaseMapper {
      *
      * @private
      */
-    static generateJWTToken(): string
-    {
+    static generateJWTToken(): string {
         // Define token header
         const header = {
             alg: 'HS256',
@@ -109,8 +245,7 @@ export class DeployMapper extends BaseMapper {
      * @param source
      * @private
      */
-    static _base64url(source: any): string
-    {
+    static _base64url(source: any): string {
         // Encode in classical base64
         let encodedSource = Base64.stringify(source);
 

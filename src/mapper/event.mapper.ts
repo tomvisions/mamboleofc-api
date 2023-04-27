@@ -173,7 +173,7 @@ export class EventMapper extends BaseMapper {
         try {
 
             event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
-
+                console.log('')
             if (event.bannerImage.includes('data:image')) {
                 event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/',`banner-image-${identifier}`);
             }
