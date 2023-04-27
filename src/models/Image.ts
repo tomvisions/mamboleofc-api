@@ -1,5 +1,5 @@
 "use strict";
-import {mongoose} from "../db/Mongoose";
+import {mongoose, mongooseLive} from "../db/Mongoose";
 import {Schema, model, Model} from "mongoose";
 import {s3Mapper} from "../mapper/s3.mapper";
 import {Base} from ".";
@@ -51,11 +51,6 @@ class Image extends Base {
     }, {toJSON: {getters: true}, toObject: { getters: true }});
 
     public static GalleryScheme = new Schema({
-        id: {
-            type: Schema.Types.String,
-            autoIncrement: true,
-            primaryKey: true
-        },
         slug: {
             type: Schema.Types.String,
         },
@@ -79,3 +74,4 @@ class Image extends Base {
 }
 
 export const image = mongoose.model('Image', Image.GalleryScheme);
+export const imageLive = mongooseLive.model('Image', Image.GalleryScheme);

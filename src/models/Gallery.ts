@@ -1,6 +1,6 @@
 "use strict";
 
-import {mongoose} from "../db/Mongoose";
+import {mongoose, mongooseLive} from "../db/Mongoose";
 import {Schema, model, Model} from "mongoose";
 import {s3Mapper} from "../mapper/s3.mapper";
 //import {Image} from "../sequelize";
@@ -27,10 +27,8 @@ class Gallery extends Base {
     }
 
     public static gallerySchema = new Schema({
-        id: {
+        slug: {
             type: Schema.Types.String,
-            autoIncrement: true,
-            primaryKey: true
         },
         name: {
             type: Schema.Types.String,
@@ -66,6 +64,7 @@ class Gallery extends Base {
 }
 
 export const gallery = mongoose.model('Gallery', Gallery.gallerySchema);
+export const galleryLive = mongooseLive.model('Gallery', Gallery.gallerySchema);
 
 //let g = new Gallery();
 //gallery.image
