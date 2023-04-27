@@ -3,45 +3,140 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Serverless Express Application/API powered by API Gateway and Lambda
 Parameters:
-  DomainName:
-    Type: String
-    Description: API Domain name
-    Default: $DomainName
-  NodeEnv:
-    Type: String
-    Description: Node environment to use
-    Default: ${NodeEnv}
-  DbHost:
-    Type: String
-    Description: DbHost
-    Default: $DbHost
-  UserName:
-    Type: String
-    Description: The UserName
-    Default: $UserName
-  Password:
-    Type: String
-    Description: The password
-    Default: $Password
-  DataBase:
-    Type: String
-    Description: The database
-    Default: $Database
-  TokenSecret:
-    Type: String
-    Description: The secret
-    Default: TokenSecret
+    DomainName:
+        Type: String
+        Description: API Domain name
+        Default: $DomainName
+    Certificate:
+        Type: String
+        Description: Certificate
+        Default: $Certificate
 
-Globals:
-  Function:
-    Environment:
-      Variables:
-        NODE_ENV: { "Ref" : "NodeEnv" }
-        DB_HOST: { "Ref" : "DbHost" }
-        USERNAME: { "Ref" : "UserName" }
-        PASSWORD:  { "Ref" : "Password" }
-        DATABASE: { "Ref" : "DataBase" }
-        TOKEN_SECRET: { "Ref" : "TokenSecret" }
+Conditions:
+    UseDomainName: !Not
+        - !Equals
+            - !Ref DomainName
+            - ''
+    UseCertificate: !Not
+        - !Equals
+            - !Ref Certificate
+            - ''
+
+Resources:
+    ExpressApi:
+        Type: AWS::Serverless::HttpApi
+
+    ExpressLambdaFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./dist
+            PackageType: Zip
+            Runtime: nodejs18.x
+            Handler: lambda.handler
+            MemorySize: 1024
+            Timeout: 30
+        Events:
+            ProxyApiRoot:
+                Type: HttpApi
+                Properties:
+                    ApiId: !Ref ExpressApi
+
+                Policies:
+                    - SESBulkTemplatedCrudPolicy:
+                          IdentityName: mamboleofc.ca
+                    - SESEmailTemplateCrudPolicy: {}
+    MyApiCertificate:
+        Type: 'AWS::CertificateManager::Certificate'
+        Condition: UseCertificate
+        Properties:
+            DomainName: !Sub '*.${Certificate}'
+            DomainValidationOptions:
+                - DomainName: !Sub '*.${Certificate}'
+                  ValidationDomain: !Ref Certificate
+            SubjectAlternativeNames:
+                - !Ref Certificate
+                - !Sub '*.${Certificate}'
+
+    MyApiDomainName:
+        Type: 'AWS::ApiGateway::DomainName'
+        Condition: UseDomainName
+        Properties:
+            CertificateArn: !Ref MyApiCertificate
+            DomainName: !Ref DomainName
+
+    MyApiBasePathMapping:
+        Type: 'AWS::ApiGateway::BasePathMapping'
+        Condition: UseDomainName
+        Properties:
+            RestApiId: !Ref ExpressApi
+            DomainName: !Ref MyApiDomainName
+            BasePath: '(none)'
+            Stage: prod
+
+    Route53HostedZone:
+        Type: AWS::Route53::HostedZone
+        Condition: UseDomainName
+        Properties:
+            Name: !Ref DomainName
+
+    MyApiRoute53RecordSetGroup:
+        Type: AWS::Route53::RecordSetGroup
+        Condition: UseDomainName
+        Properties:
+            HostedZoneId: !Ref Route53HostedZone
+            RecordSets:
+                - Name: !Sub ${DomainName}.
+                  Type: A
+                  AliasTarget:
+                      EvaluateTargetHealth: false
+                      HostedZoneId: !GetAtt MyApiDomainName.DistributionHostedZoneId
+                      DNSName: !GetAtt MyApiDomainName.DistributionDomainName
+
+Outputs:
+    LambdaFunctionConsoleUrl:
+        Description: Console URL for the Lambda Function.
+        Value: !Sub https://${AWS::Region}.console.aws.amazon.com/lambda/home?region=${AWS::Region}#/functions/${ExpressLambdaFunction}
+
+    ApiGatewayApiConsoleUrl:
+        Description: Console URL for the API Gateway API's Stage.
+        Value: !Sub https://${AWS::Region}.console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/apis/${ExpressApi}/stages/prod
+
+    ApiUrl:
+        Description:
+            Invoke URL for your API. Clicking this link will perform a GET request
+            on the root resource of your API.
+        Value: !Sub https://${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com/
+
+    LambdaFunctionName:
+        Description: Name of the Serverless Express Lambda Function
+        Value: !Ref ExpressLambdaFunction
+
+
+
+
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Express Application/API powered by API Gateway and Lambda
+Parameters:
+    DomainName:
+        Type: String
+        Description: API Domain name
+        Default: $DomainName
+    Certificate:
+        Type: String
+        Description: Certificate
+        Default: $Certificate
+
+Conditions:
+    UseDomainName: !Not
+        - !Equals
+            - !Ref DomainName
+            - ''
+    UseCertificate: !Not
+        - !Equals
+            - !Ref Certificate
+            - ''
 
 Conditions:
   UseDomainName:
@@ -61,7 +156,7 @@ Resources:
     Properties:
       CodeUri: ./dist
       PackageType: Zip
-      Runtime: nodejs14.x
+      Runtime: nodejs18.x
       Handler: lambda.handler
       MemorySize: 1024
       Timeout: 30
@@ -156,6 +251,13 @@ Resources:
                 RestApiId: !Ref ExpressApi
                 Path: /api/v1/about
                 Method: ANY
+        Page:
+            Type: Api
+            Properties:
+                RestApiId: !Ref ExpressApi
+                Path: /api/v1/page
+                Method: ANY
+
         Deploy:
             Type: Api
             Properties:
@@ -169,16 +271,17 @@ Resources:
         - SESEmailTemplateCrudPolicy: {}
 
 
-  MyApiCertificate:
-    Type: 'AWS::CertificateManager::Certificate'
-    Condition: UseDomainName
-    Properties:
-      DomainName: !Sub '*.${DomainName}'
-      DomainValidationOptions:
-        - DomainName: !Sub '*.${DomainName}'
-          ValidationDomain: !Ref DomainName
-      SubjectAlternativeNames:
-        - !Ref DomainName
+    MyApiCertificate:
+        Type: 'AWS::CertificateManager::Certificate'
+        Condition: UseCertificate
+        Properties:
+            DomainName: !Sub '*.${Certificate}'
+            DomainValidationOptions:
+                - DomainName: !Sub '*.${Certificate}'
+                  ValidationDomain: !Ref Certificate
+            SubjectAlternativeNames:
+                - !Ref Certificate
+                - !Sub '*.${Certificate}'
 
   MyApiDomainName:
     Type: 'AWS::ApiGateway::DomainName'
