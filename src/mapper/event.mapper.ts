@@ -175,16 +175,17 @@ export class EventMapper extends BaseMapper {
             event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
                 console.log('')
             if (event.bannerImage.includes('data:image')) {
+                console.log('the banner is being touched');
                 event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/',`banner-image-${identifier}`);
             }
 
             if (event.aboutImage.includes('data:image')) {
-                console.log('detected about');
+                console.log('detected about oage');
                 event.aboutImage = await s3Mapper.upload(event.aboutImage, 'mamboleofc/events/',`about-image-${identifier}`);
             }
 
             if (event.contentImage.includes('data:image')) {
-                console.log('detected about');
+                console.log('detected content image');
                 event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/',`content-image-${identifier}`);
             }
 

@@ -3,6 +3,7 @@ import fs, {existsSync} from "fs";
 import {User} from "../models";
 const sizeOf = require('image-size');
 import * as uuid from 'uuid';
+const { exec } = require("child_process");
 
 export interface FileProperties {
     content_type?: string;
@@ -48,6 +49,8 @@ export class S3Mapper {
             return `${s3PrePath}${identifier}.${fileProperties.extension}`;
 
         } catch (error) {
+            console.log('the error');
+            console.log( error.toString());
             //   return {results: "error", message: error.toString()}
             return {result: "error", message: error.toString()}
         }
@@ -128,6 +131,18 @@ export class S3Mapper {
 
         fileProperties = await this.writeToDisk(key, image)
 
+        exec("ls -la /tmp", (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+        });
+
         await this.uploadToS3(`${key}.${fileProperties.extension}`, fileProperties.content_type);
 
         return fileProperties;
@@ -148,9 +163,13 @@ export class S3Mapper {
                 ContentType: contentType,
                 Body: fileStream
             };
+            console.log('the params to send');
             console.log(params);
             return await this._client.send(new PutObjectCommand(params));
         } catch (error) {
+            console.log('the error');
+            console.log(error);
+
             return error.toString();
         }
     }
