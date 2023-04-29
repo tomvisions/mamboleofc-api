@@ -29,11 +29,11 @@ export class EventMapper extends BaseMapper {
         try {
 
 //            console.log('get event');
-  //          console.log(queryWhere);
+            //          console.log(queryWhere);
 
             const params = {
 
-                    slug:queryWhere['slug'],
+                slug: queryWhere['slug'],
 
             };
 
@@ -67,13 +67,13 @@ export class EventMapper extends BaseMapper {
 
     }
 
-    public async apiGetEvents(params = {}) : Promise <string[] | string> {
+    public async apiGetEvents(params = {}): Promise<string[] | string> {
         try {
 
             return await EventMongoose.find(params).then(event => {
                 return event;
 //                return this.processArray(event)
-                }).catch (error => {
+            }).catch(error => {
 
                 return error.toString();
             });
@@ -85,20 +85,15 @@ export class EventMapper extends BaseMapper {
     }
 
     public async apiImportEvents(params) {
-        console.log('the params');
-        console.log(params);
         try {
             if ((await EventMongoose.find(params)).length === 0) {
-                console.log('about to enter');
-                console.log(params);
-
 
                 return await new EventMongoose(params).save();
             }
 
             return await EventMongoose.find(params).then(event => {
                 return this.processArray(event)
-            }).catch (error => {
+            }).catch(error => {
                 return error.toString();
             });
 
@@ -112,28 +107,28 @@ export class EventMapper extends BaseMapper {
     public async apiUpdateGame(id, game) {
         try {
             return true;
-/*            console.log('in mapper');
-            console.log(game);
-            console.log('dd');
-            //   console.log(JSON.parse(game));
+            /*            console.log('in mapper');
+                        console.log(game);
+                        console.log('dd');
+                        //   console.log(JSON.parse(game));
 
-            const result = await Event.upsert(
-                game
-            ).then(data => {
-                console.log('good');
-                console.log(data);
+                        const result = await Event.upsert(
+                            game
+                        ).then(data => {
+                            console.log('good');
+                            console.log(data);
 
-                console.log('dara');
-                return data;
+                            console.log('dara');
+                            return data;
 
-            }).catch(data => {
-                console.log('error in catch');
-                console.log(data);
-                return false;
-            });
+                        }).catch(data => {
+                            console.log('error in catch');
+                            console.log(data);
+                            return false;
+                        });
 
-            return result;
-*/
+                        return result;
+            */
         } catch (error) {
             console.log(`Could not update games ${error}`);
             return false;
@@ -173,26 +168,23 @@ export class EventMapper extends BaseMapper {
         try {
 
             event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
-                console.log('')
+            console.log('')
             if (event.bannerImage.includes('data:image')) {
-                console.log('the banner is being touched');
-                event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/',`banner-image-${identifier}`);
+                event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/', `banner-image-${identifier}`);
             }
 
             if (event.aboutImage.includes('data:image')) {
-                console.log('detected about oage');
-                event.aboutImage = await s3Mapper.upload(event.aboutImage, 'mamboleofc/events/',`about-image-${identifier}`);
+                event.aboutImage = await s3Mapper.upload(event.aboutImage, 'mamboleofc/events/', `about-image-${identifier}`);
             }
 
             if (event.contentImage.includes('data:image')) {
-                console.log('detected content image');
-                event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/',`content-image-${identifier}`);
+                event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/', `content-image-${identifier}`);
             }
 
             //           await this.generatePrePath('/tmp/mamboleofc/avatars');
-   //         fileProperties = await this.getImageReadyForUpload(`mamboleofc/events/banner-image-${identifier}`, event['bannerImage']);
+            //         fileProperties = await this.getImageReadyForUpload(`mamboleofc/events/banner-image-${identifier}`, event['bannerImage']);
 
-       ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
+            ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
 
             const result = await EventMongoose.findOneAndUpdate({identifier: identifier}, event);
 
@@ -212,8 +204,7 @@ export class EventMapper extends BaseMapper {
      *
      * @private
      */
-    static generateJWTToken(): string
-    {
+    static generateJWTToken(): string {
         // Define token header
         const header = {
             alg: 'HS256',
@@ -255,8 +246,7 @@ export class EventMapper extends BaseMapper {
      * @param source
      * @private
      */
-    static _base64url(source: any): string
-    {
+    static _base64url(source: any): string {
         // Encode in classical base64
         let encodedSource = Base64.stringify(source);
 

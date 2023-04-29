@@ -70,7 +70,7 @@ export class S3Mapper {
         let imageType: string;
 
         imageType = 'landscape';
-
+console.log('start of write disk');
         try {
             if (image.includes('jpeg;base64')) {
                 imageModified = image.replace(/^data:image\/jpeg;base64,/, "");
@@ -85,7 +85,6 @@ export class S3Mapper {
             await fs.writeFileSync(`/tmp/${key}.${extension}`, imageModified, 'base64');
 
             const imageSize = await this.checkSize(`/tmp/${key}.${extension}`);
-
 
             if (imageSize.height > imageSize.width) {
                 imageType = 'portrait';
@@ -131,18 +130,6 @@ export class S3Mapper {
 
         fileProperties = await this.writeToDisk(key, image)
 
-        exec("ls -la /tmp", (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-        });
-
         await this.uploadToS3(`${key}.${fileProperties.extension}`, fileProperties.content_type);
 
         return fileProperties;
@@ -163,11 +150,10 @@ export class S3Mapper {
                 ContentType: contentType,
                 Body: fileStream
             };
-            console.log('the params to send');
-            console.log(params);
+
             return await this._client.send(new PutObjectCommand(params));
         } catch (error) {
-            console.log('the error');
+            console.log('the error that showed up');
             console.log(error);
 
             return error.toString();
