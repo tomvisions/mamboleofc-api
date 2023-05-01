@@ -70,6 +70,9 @@ if (process.env.NODE_ENV === 'dev') {
 console.log('the enviornment vairagles');
 console.log(process.env);
 
+console.log('the database vairagles');
+console.log(process.env.MONGO_DATABASE);
+
 let mongooseClass = new MongooseApi(process.env.MONGO_DATABASE,  options );//.initialize();
 let mongooseLiveClass = new MongooseApi(process.env.MONGO_LIVE_DATABASE,  options );//.initialize();
 //const mongoose =   mongooseClass.initialize();
