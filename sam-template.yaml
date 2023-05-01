@@ -200,10 +200,6 @@ Resources:
         Type: AWS::CloudFront::Distribution
         Properties:
             DistributionConfig:
-                Aliases: [!Ref DomainName]
-                ViewerCertificate:
-                    AcmCertificateArn: !Ref MyApiCertificate
-                    SslSupportMethod: sni-only
                 Enabled: "true"
                 Comment: !Ref AWS::StackName
                 HttpVersion: http2
