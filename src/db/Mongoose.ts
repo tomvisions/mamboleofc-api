@@ -67,6 +67,8 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     options = { useNewUrlParser: true, useUnifiedTopology: true }
 }
+console.log('the enviornment vairagles');
+console.log(process.env);
 
 let mongooseClass = new MongooseApi(process.env.MONGO_DATABASE,  options );//.initialize();
 let mongooseLiveClass = new MongooseApi(process.env.MONGO_LIVE_DATABASE,  options );//.initialize();
