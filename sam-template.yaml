@@ -1,0 +1,244 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Express Application/API powered by API Gateway and Lambda
+Parameters:
+    DomainName:
+        Type: String
+        Description: API Domain name
+        Default: $DomainName
+    Certificate:
+        Type: String
+        Description: Certificate
+        Default: $Certificate
+    BucketNameImages:
+        Type: String
+        Description: Bucket for Images
+        Default: $BucketNameImages
+    Stage:
+        Type: String
+        Description: Bucket for Images
+        Default: $Stage
+
+
+Conditions:
+    UseDomainName: !Not
+        - !Equals
+            - !Ref DomainName
+            - ''
+    UseCertificate: !Not
+        - !Equals
+            - !Ref Certificate
+            - ''
+
+Resources:
+    ExpressApi:
+        Type: AWS::Serverless::Api
+        Properties:
+            StageName: !Ref Stage
+            BinaryMediaTypes:
+                - image/png
+                - image/jpg
+                - image/jpeg
+                - multipart/form-data
+
+    ExpressLambdaFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./dist
+            PackageType: Zip
+            Runtime: nodejs18.x
+            Handler: lambda.handler
+            MemorySize: 1024
+            Timeout: 30
+            Events:
+                Game:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/game
+                        Method: ANY
+                Team:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/team
+                        Method: ANY
+                User:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/user
+                        Method: ANY
+                UserSignIn:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/user/sign-in
+                        Method: ANY
+                UserSignUp:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/user/sign-up
+                        Method: ANY
+                UserAvatar:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/user/avatar
+                        Method: ANY
+                Gallery:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/gallery
+                        Method: ANY
+                GalleryImage:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/gallery/image
+                        Method: ANY
+                GalleryImages:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/gallery/images
+                        Method: ANY
+                Mail:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/mail
+                        Method: ANY
+                Event:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/event
+                        Method: ANY
+                EventImport:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/event/import
+                        Method: ANY
+                Roster:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/roster
+                        Method: ANY
+                Access:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/access
+                        Method: ANY
+                About:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/about
+                        Method: ANY
+                Page:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/page
+                        Method: ANY
+
+                Deploy:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/deploy
+                        Method: ANY
+
+            Policies:
+                - SESBulkTemplatedCrudPolicy:
+                      IdentityName: mamboleofc.ca
+                - SESEmailTemplateCrudPolicy: {}
+                - S3WritePolicy:
+                      BucketName: !Ref BucketNameImages
+
+
+
+    MyApiCertificate:
+        Type: 'AWS::CertificateManager::Certificate'
+        Condition: UseCertificate
+        Properties:
+            DomainName: !Sub '*.${Certificate}'
+            DomainValidationOptions:
+                - DomainName: !Sub '*.${Certificate}'
+                  ValidationDomain: !Ref Certificate
+            SubjectAlternativeNames:
+                - !Ref Certificate
+                - !Sub '*.${Certificate}'
+
+    Route53HostedZone:
+        Type: AWS::Route53::HostedZone
+        Condition: UseDomainName
+        Properties:
+            Name: !Ref DomainName
+
+    MyApiRoute53RecordSetGroup:
+        Type: AWS::Route53::RecordSetGroup
+        Condition: UseDomainName
+        Properties:
+            HostedZoneId: !Ref Route53HostedZone
+            RecordSets:
+                - Name: !Sub ${DomainName}.
+                  Type: A
+                  AliasTarget:
+                      EvaluateTargetHealth: true
+                      HostedZoneId: "Z2FDTNDATAQYW2"
+                      DNSName: !Sub ${Distribution.DomainName}.
+
+    Distribution:
+        Type: AWS::CloudFront::Distribution
+        Properties:
+            DistributionConfig:
+                Aliases: [!Ref DomainName]
+                ViewerCertificate:
+                    AcmCertificateArn: !Ref MyApiCertificate
+                    SslSupportMethod: sni-only
+                Enabled: "true"
+                Comment: !Ref AWS::StackName
+                HttpVersion: http2
+                Origins:
+                  - DomainName: !Sub "${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com"
+                    Id: ApiOrigin
+                    CustomOriginConfig:
+                        HTTPPort: 80
+                        HTTPSPort: 443
+                        OriginProtocolPolicy: https-only
+                DefaultCacheBehavior:
+                    Compress: "true"
+                    AllowedMethods:
+                        - GET
+                        - HEAD
+                        - OPTIONS
+                    TargetOriginId: ApiOrigin
+                    ViewerProtocolPolicy: "allow-all"
+                    CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+                    ResponseHeadersPolicyId: "5cc3b908-e619-4b99-88e5-2cf7f45965bd"
+
+Outputs:
+    LambdaFunctionConsoleUrl:
+        Description: Console URL for the Lambda Function.
+        Value: !Sub https://${AWS::Region}.console.aws.amazon.com/lambda/home?region=${AWS::Region}#/functions/${ExpressLambdaFunction}
+
+    ApiGatewayApiConsoleUrl:
+        Description: Console URL for the API Gateway API's Stage.
+        Value: !Sub https://${AWS::Region}.console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/apis/${ExpressApi}/stages/${Stage}
+
+    ApiUrl:
+        Description: Invoke URL for your API. Clicking this link will perform a GET request
+            on the root resource of your API.
+        Value: !Sub https://${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com/
+
+    LambdaFunctionName:
+        Description: Name of the Serverless Express Lambda Function
+        Value: !Ref ExpressLambdaFunction
