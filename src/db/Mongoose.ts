@@ -1,3 +1,6 @@
+console.log('the enviornment vairagles first');
+console.log(process.env);
+
 import Mongoose, {Connection, Model, Schema} from 'mongoose';
 import  {Sequelize, Dialect} from '.';
 import dotenv from "dotenv";
