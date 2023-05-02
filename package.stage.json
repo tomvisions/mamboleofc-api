@@ -11,7 +11,7 @@
         "domain": "api-stage.mamboleofc.ca",
         "certificate": "mamboleofc.ca",
         "bucketNameImages": "tomvisions-original-images",
-        "stage": "stage",
+        "stage": "stage"
     },
     "scripts": {
         "build": "tsc --project .",
