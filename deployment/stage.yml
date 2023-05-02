@@ -19,6 +19,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - sam --version
+      - echo $MONGO_DATABASE
 #     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 955552760689.dkr.ecr.us-east-1.amazonaws.com
       - ln -s  package.stage.json package.json
 #      - npm install babel-plugin-transform-runtime --save
