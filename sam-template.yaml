@@ -19,6 +19,14 @@ Parameters:
         Type: String
         Description: Bucket for Images
         Default: $Stage
+    MongoDataBase:
+        Type: String
+        Description: Mongo DataBase
+        Default: $MongoDataBase
+    MongoLiveDataBase:
+        Type: String
+        Description: Mongo Live DataBase
+        Default: $MongoLiveBase
 
 
 Conditions:
@@ -49,6 +57,10 @@ Resources:
             PackageType: Zip
             Runtime: nodejs18.x
             Handler: lambda.handler
+            Environment:
+                Variables:
+                    MONGO_DATABASE: !Ref MongoDataBase
+                    MONGO_LIVE_DATABASE: !Ref MongoLiveDataBase
             MemorySize: 1024
             Timeout: 30
             Events:
