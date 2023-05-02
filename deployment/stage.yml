@@ -26,7 +26,7 @@ phases:
 #      - npm install babel-plugin-transform-runtime --save
 #      - npm install babel-preset-env --save
       - npm install
-      -
+      - npm install -g cross-env
   build:
     commands:
       - npm run deploy
