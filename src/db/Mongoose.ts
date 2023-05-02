@@ -1,6 +1,3 @@
-console.log('the enviornment vairagles first');
-console.log(process.env);
-
 import Mongoose, {Connection, Model, Schema} from 'mongoose';
 import  {Sequelize, Dialect} from '.';
 import dotenv from "dotenv";
@@ -70,11 +67,6 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     options = { useNewUrlParser: true, useUnifiedTopology: true }
 }
-console.log('the enviornment vairagles');
-console.log(process.env);
-
-console.log('the database vairagles');
-console.log(process.env.MONGO_DATABASE);
 
 let mongooseClass = new MongooseApi(process.env.MONGO_DATABASE,  options );//.initialize();
 let mongooseLiveClass = new MongooseApi(process.env.MONGO_LIVE_DATABASE,  options );//.initialize();
