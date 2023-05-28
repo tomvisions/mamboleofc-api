@@ -78,10 +78,10 @@ export class PageMapper extends BaseMapper {
         try {
 
             return await PageMongoose.find(params).then(pages => {
-
+                console.log('the pages');
                 console.log(pages);
                 return pages;
-//                return this.processArray(event)
+               // return this.processArray(pages)
             }).catch (error => {
                 console.log('here is an error');
 

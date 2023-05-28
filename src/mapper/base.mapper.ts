@@ -20,11 +20,17 @@ export interface Query {
 The Base Mapper. Functions which are in common with others mappers are placed here to avoid duplication of code
  */
 export class BaseMapper {
+    private _QUERY: string;
+
     public async processArray(listing) {
+        console.log('the listing');
+        console.log(listing);
         if (listing.length) {
             const listArray = [];
 
             for (let item of listing) {
+                console.log('item');
+                console.log(item);
                 listArray.push(item.get());
             }
 
@@ -60,9 +66,12 @@ export class BaseMapper {
         const order = query.order || 'asc';
         const page = query.page || 1;
         const size = query.size || 10;
-
+        console.log('the clone');
+        console.log(listClone);
         if (sort === 'identifier' || sort === query.sort)
         {
+            console.log('the clone');
+            console.log(listClone);
             listClone.sort((a, b) => {
 
                 const fieldA = a[sort].toString().toUpperCase();
@@ -145,5 +154,10 @@ export class BaseMapper {
         } catch (error) {
             return error.toString();
         }
+    }
+
+
+    set QUERY(value: string) {
+        this._QUERY = value;
     }
 }

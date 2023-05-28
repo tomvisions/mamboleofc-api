@@ -75,6 +75,8 @@ export class DeployMapper extends BaseMapper {
                 theItem['contentImage'] = item.contentImage;
 
                 console.log(item);
+
+                await EventMongooseLive.find({ identifier:item.identifier }).deleteOne();
                 const test = await EventMongooseLive.create(theItem).then(data => {
                     console.log('good stuff');
                     console.log(data);
@@ -94,7 +96,7 @@ export class DeployMapper extends BaseMapper {
     }
 
     async deployMedia() {
-/*
+        const too = await GalleryMongooseLive.find().deleteMany();
         await GalleryMongoose.find().then(async page => {
             console.log('arr');
             //      console.log('the page');
@@ -125,7 +127,9 @@ export class DeployMapper extends BaseMapper {
 
             }
         });
-*/
+
+
+        await ImageMongooseLive.find().deleteMany();
         await ImageMongoose.find().then(async page => {
             console.log('arr');
             //      console.log('the page');
@@ -140,8 +144,10 @@ export class DeployMapper extends BaseMapper {
                 theItem['images'] = item.images;
                 theItem['slug'] = item.slug;
                 theItem['name'] = item.name;
-
+                console.log('item');
                 console.log(item);
+                console.log('the item');
+                console.log(theItem);
                 const test = await ImageMongooseLive.create(theItem).then(data => {
                     console.log('good stuff');
                     console.log(data);
@@ -160,7 +166,9 @@ export class DeployMapper extends BaseMapper {
     }
 
     async deployPage() {
-
+        const too = await PageMongooseLive.find().deleteMany();
+        console.log('result');
+        console.log(too);
         await PageMongoose.find().then(async page => {
             console.log('arr');
             //      console.log('the page');
@@ -177,7 +185,9 @@ export class DeployMapper extends BaseMapper {
                 theItem['title'] = item.title;
 
                 console.log(item);
-                const test = await PageMongooseLive.create(theItem).then(data => {
+//                await EventMongooseLive.find({ identifier:item.identifier }).deleteOne();
+
+                await PageMongooseLive.create(theItem).then(data => {
                     console.log('good stuff');
                     console.log(data);
                     return data;

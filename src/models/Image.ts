@@ -38,7 +38,7 @@ class Image extends Base {
         id: {type: Schema.Types.String},
         image_type: {type: Schema.Types.String},
         gallery_slug: {type: Schema.Types.String},
-        file: { type: Schema.Types.String, get: this.generateSmallAndOriginal },
+        file: { type: Schema.Types.Mixed, get: this.generateSmallAndOriginal },
         caption: {type: Schema.Types.String},
         createdAt: {
             type: Schema.Types.Date,

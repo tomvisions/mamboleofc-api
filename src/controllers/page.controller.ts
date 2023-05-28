@@ -23,7 +23,8 @@ export class PageController {
 
             return res.status(200).json({result: "success", page});
         } else {
-            const page = await pageMapper.apiGetPages();
+            pageMapper.QUERY =  req.query;
+            const page = await pageMapper.apiGetPages({});
             console.log('the sthi');
             console.log(page);
             if (typeof page === 'string') {
