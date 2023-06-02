@@ -9,6 +9,7 @@ import Utf8 from 'crypto-js/enc-utf8';
 import {BaseMapper} from ".";
 import * as uuid from 'uuid';
 import {FileProperties, s3Mapper} from "./s3.mapper";
+import crypto from "crypto"
 
 export class EventMapper extends BaseMapper {
     private _PARAMS_SLUG: string = 'slug';
@@ -168,17 +169,17 @@ export class EventMapper extends BaseMapper {
         try {
 
             event.slug = event.name.replace(/\s+/g, '-').toLowerCase();
-            console.log('')
+            const random = crypto.randomBytes(20).toString('hex');
             if (event.bannerImage.includes('data:image')) {
-                event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/', `banner-image-${identifier}`);
+                event.bannerImage = await s3Mapper.upload(event.bannerImage, 'mamboleofc/events/', `banner-image-${identifier}-${random}`);
             }
 
             if (event.aboutImage.includes('data:image')) {
-                event.aboutImage = await s3Mapper.upload(event.aboutImage, 'mamboleofc/events/', `about-image-${identifier}`);
+                event.aboutImage = await s3Mapper.upload(event.aboutImage, 'mamboleofc/events/', `about-image-${identifier}-${random}`);
             }
 
             if (event.contentImage.includes('data:image')) {
-                event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/', `content-image-${identifier}`);
+                event.contentImage = await s3Mapper.upload(event.contentImage, 'mamboleofc/events/', `content-image-${identifier}-${random}`);
             }
 
             //           await this.generatePrePath('/tmp/mamboleofc/avatars');
