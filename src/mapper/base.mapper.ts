@@ -57,21 +57,15 @@ export class BaseMapper {
     public generatePagination(list:string[], query: Query = {}) : PaginationResults {
         let listClone;
         listClone = list;
-   //     console.log('the list');
-     //   console.log(list);
-     //   console.log(query);
 
         const search = query.search || null;
         const sort = query.sort || this['DEFAULT_SORT']
         const order = query.order || 'asc';
         const page = query.page || 1;
         const size = query.size || 10;
-        console.log('the clone');
-        console.log(listClone);
+
         if (sort === 'identifier' || sort === query.sort)
         {
-            console.log('the clone');
-            console.log(listClone);
             listClone.sort((a, b) => {
 
                 const fieldA = a[sort].toString().toUpperCase();

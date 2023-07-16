@@ -20,6 +20,7 @@ export class MailMapper {
     private _phone: string;
     private _name;
     private _email;
+    private _teamName
     private _params;
     private _SUBJECT_CONTENT;
     private _HTML_CONTENT;
@@ -30,6 +31,7 @@ export class MailMapper {
     private _PARAMS_SUBJECT: string = 'subject';
     private _PARAMS_PHONE: string = 'phone';
     private _PARAMS_NAME: string = 'name';
+    private _PARAMS_TEAM_NAME: string = 'team_name';
 
 
     constructor() {
@@ -46,37 +48,54 @@ export class MailMapper {
         await this.parseBody(body);
 
         switch (this._emailType) {
-            case "contact-us":
+            case EmailMessaging.EMAIL_TYPE_CONTACT_US:
                 this._params.Destination.ToAddresses.push('tcruicksh@gmail.com');
                 this._params.Destination.ToAddresses.push('mamboleofc@gmail.com');
-                this._params.Source = 'admin@mamboleofc.ca';
+                this._params.Source = 'tomc@tomvisions.com';
                 this._params.ReplyToAddresses = [];
                 this._params.Template = 'ContactUs';
                 await this.getContactUsEmail();
                 this._params.TemplateData = `{\"PHONE_CONTENT\":\"${this._phone}\",\"SUBJECT_CONTENT\":\"${this._SUBJECT_CONTENT}\",\"NAME_CONTENT\":\"${this._name}\", \"NAME\":\"Info\",\"HTML_CONTENT\":\"${this._HTML_CONTENT}\",\"EMAIL_CONTENT\":\"${this._email}\",  \"TEXT_CONTENT\":\"${this._TEXT_CONTENT}\"}`;
                 break;
 
+            case EmailMessaging.EMAIL_TYPE_TOURNAMENT_REGISTRATION:
+                this._params.Destination.ToAddresses.push('tcruicksh@gmail.com');
+                this._params.Destination.ToAddresses.push('mamboleofc@gmail.com');
+                this._params.Source = 'tomc@tomvisions.com';
+                this._params.ReplyToAddresses = [];
+                this._params.Template = 'TournamentRegistration';
+                await this.getRegistrationEmail();
+                this._params.TemplateData = `{\"NAME_CONTENT\":\"${this._name}\", \"NAME\":\"Info\",\"TEAM_NAME_CONTENT\":\"${this._teamName}\", \"HTML_CONTENT\":\"${this._HTML_CONTENT}\",\"EMAIL_CONTENT\":\"${this._email}\",  \"TEXT_CONTENT\":\"${this._TEXT_CONTENT}\"}`;
+                break;
+
         }
     }
 
     async parseBody(body) {
-        this._body = body[this._PARAMS_BODY];
+        this._body = body[this._PARAMS_BODY] || null;
         this._subject = body[this._PARAMS_SUBJECT] || null;
-        this._emailType = body[this._PARAMS_EMAIL_TYPE];
-        this._phone = body[this._PARAMS_PHONE];
-        this._name = body[this._PARAMS_NAME];
-        this._email = body[this._PARAMS_EMAIL];
+        this._emailType = body[this._PARAMS_EMAIL_TYPE] || null;
+        this._phone = body[this._PARAMS_PHONE] || null;
+        this._name = body[this._PARAMS_NAME] || null
+        this._email = body[this._PARAMS_EMAIL] || null;
+        this._teamName = body[this._PARAMS_TEAM_NAME] || null;
 
     }
 
     async getContactUsEmail() {
-        this._SUBJECT_CONTENT = format(EmailMessaging.CONTACTUS_SUBJECT,  this._subject)
-        this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML,  this._body);
-        this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT, this._body);
+        this._SUBJECT_CONTENT = format(EmailMessaging.CONTACTUS_SUBJECT, this._subject)
+        this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML);
+        this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT);
     }
 
+    async getRegistrationEmail() {
+        this._HTML_CONTENT = format(EmailMessaging.REGISTRATION_CONTENT_HTML);
+        this._TEXT_CONTENT = format(EmailMessaging.REGISTRATION_CONTENT_TEXT);
+    }
+
+
     async apiSendMail() {
-         return await this._sesClient.send(new SendTemplatedEmailCommand(this._params));
+        return await this._sesClient.send(new SendTemplatedEmailCommand(this._params));
     }
 
     get PARAMS_PHONE(): string {
@@ -101,6 +120,10 @@ export class MailMapper {
 
     get PARAMS_BODY(): string {
         return this._PARAMS_BODY;
+    }
+
+    get PARAMS_TEAM_NAME(): string {
+        return this._PARAMS_TEAM_NAME;
     }
 }
 

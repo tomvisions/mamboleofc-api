@@ -2,9 +2,6 @@ import Mongoose, {Connection, Model, Schema} from 'mongoose';
 import  {Sequelize, Dialect} from '.';
 import dotenv from "dotenv";
 dotenv.config();
-console.log('the environment');
-console.log(process.env);
-
 
 export interface OptionsMongoose {
     useNewUrlParser:boolean;
