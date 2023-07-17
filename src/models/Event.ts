@@ -41,6 +41,13 @@ class Event {
         identifier: {
             type: Schema.Types.String,
         },
+        link: {
+            type: Schema.Types.String,
+        },
+        linkName: {
+            type: Schema.Types.String,
+        },
+
         contentImage: {
             type: Schema.Types.String,
         },
