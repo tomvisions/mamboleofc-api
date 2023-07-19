@@ -201,7 +201,7 @@ Resources:
                 Enabled: "true"
                 Comment: !Ref AWS::StackName
                 HttpVersion: http2
-
+                CName: [!Sub ${Distribution.DomainName}]
                 Origins:
                   - DomainName: !Sub "${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com"
                     OriginPath: !Sub "/${Stage}"
