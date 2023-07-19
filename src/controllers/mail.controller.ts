@@ -30,7 +30,9 @@ export class MailController {
             if (valid) {
                 await mailMapper.prepareEmail(req.body);
                 const retVal = await mailMapper.apiSendMail();
-
+                console.log('the retval');
+                console.log(retVal);
+                console.log('end retval')
                 if (retVal['$metadata']['httpStatusCode'] === 200) {
 
                     return res.status(200).json({
