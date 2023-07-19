@@ -175,7 +175,7 @@ Resources:
 
             Policies:
                 - SESBulkTemplatedCrudPolicy:
-                      IdentityName: mamboleofc.ca
+                      IdentityName: tomvisions.com
                 - SESEmailTemplateCrudPolicy: {}
                 - S3WritePolicy:
                       BucketName: !Ref BucketNameImages
