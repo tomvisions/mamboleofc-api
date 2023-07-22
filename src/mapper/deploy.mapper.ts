@@ -73,6 +73,8 @@ export class DeployMapper extends BaseMapper {
                 theItem['bannerImage'] = item.bannerImage;
                 theItem['intro'] = item.intro;
                 theItem['contentImage'] = item.contentImage;
+                theItem['link'] = item.link;
+                theItem['linkName'] = item.linkName;
 
                 console.log(item);
 
