@@ -174,8 +174,19 @@ Resources:
                         Method: ANY
 
             Policies:
-                - SESBulkTemplatedCrudPolicy:
+                - SESBulkTemplatedCrudPolicy_v2:
                       IdentityName: mamboleofc.ca
+                      TemplateName: ContactUs
+                - SESBulkTemplatedCrudPolicy_v2:
+                      IdentityName: mamboleofc.ca
+                      TemplateName: TournamentRegistration
+                - SESBulkTemplatedCrudPolicy_v2:
+                      IdentityName: tomvisions.com
+                      TemplateName: ContactUs
+                - SESBulkTemplatedCrudPolicy_v2:
+                      IdentityName: tomvisions.com
+                      TemplateName: TournamentRegistration
+
                 - SESEmailTemplateCrudPolicy: {}
                 - S3WritePolicy:
                       BucketName: !Ref BucketNameImages
