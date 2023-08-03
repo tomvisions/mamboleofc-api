@@ -13,8 +13,8 @@ export class PageController {
         const queryWhere: QueryWhere = {};
 
         if (req.params[pageMapper.PARAMS_SLUG]) {
-            const boo = JSON.stringify(req.params)
-            return res.status(200).json({result: "success", boo});
+            const boo = JSON.stringify(req.params.slug)
+            return res.status(200).json({result: boo});
 /*            queryWhere.slug = req.params[pageMapper.PARAMS_SLUG];
             const page = await pageMapper.apiGetPage(queryWhere);
 
