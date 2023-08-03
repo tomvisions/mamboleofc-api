@@ -23,14 +23,10 @@ export class BaseMapper {
     private _QUERY: string;
 
     public async processArray(listing) {
-        console.log('the listing');
-        console.log(listing);
         if (listing.length) {
             const listArray = [];
 
             for (let item of listing) {
-                console.log('item');
-                console.log(item);
                 listArray.push(item.get());
             }
 

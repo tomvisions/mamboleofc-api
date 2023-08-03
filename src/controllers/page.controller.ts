@@ -30,8 +30,7 @@ export class PageController {
             }
 
             const paginationResults = pageMapper.prepareListResults(page,req.query);
-            console.log('the results');
-            console.log(paginationResults);
+        
             return res.status(200).json(paginationResults)
         }
     }
