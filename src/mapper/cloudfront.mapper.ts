@@ -5,6 +5,8 @@ import {User} from "../models";
 const sizeOf = require('image-size');
 import * as uuid from 'uuid';
 const { exec } = require("child_process");
+import dotenv from "dotenv";
+dotenv.config();
 
 export interface FileProperties {
     content_type?: string;
