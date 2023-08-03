@@ -181,7 +181,7 @@ export class PageMapper extends BaseMapper {
    //         console.log({"page":page.page, where: {where: {identifier: identifier}}});
 
             const result = await PageMongoose.findOneAndUpdate({identifier: identifier}, page);
-            await cloudFrontMapper.createInvalidation(" /api/v1/page")
+            await cloudFrontMapper.createInvalidation("/api/v1/page")
 
 
             /*.then(data => {
