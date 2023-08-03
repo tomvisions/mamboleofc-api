@@ -13,16 +13,14 @@ export class PageController {
         const queryWhere: QueryWhere = {};
 
         if (req.params[pageMapper.PARAMS_SLUG]) {
-            const boo = JSON.stringify(req.params.slug)
-            return res.status(200).json({result: boo});
-/*            queryWhere.slug = req.params[pageMapper.PARAMS_SLUG];
+            queryWhere.slug = req.params[pageMapper.PARAMS_SLUG];
             const page = await pageMapper.apiGetPage(queryWhere);
 
             if (!page) {
                 return res.status(500).json({error: "Unable to retrieve page"})
             }
 
-            return res.status(200).json({result: "success", page}); */
+            return res.status(200).json({result: "success", page});
         } else if (req.query[pageMapper.PARAMS_SLUG]) {
             queryWhere.slug = req.query[pageMapper.PARAMS_SLUG];
             const page = await pageMapper.apiGetPage(queryWhere);
@@ -44,21 +42,6 @@ export class PageController {
 
             return res.status(200).json(paginationResults)
         }
-    }
-
-    public static async apiGetPageAbout(req: any, res: any, next: any) {
-        //   if (!pageMapper.checkAuthenication(req.headers.authorization)) {
-        //     return res.status(500).json({error: 'Not Authorized to access the API'})
-        // }
-        console.log('arrived here about')
-
-        const queryWhere: QueryWhere = {};
-
-            queryWhere.slug = 'about-index'
-            const page = await pageMapper.apiGetPage(queryWhere);
-
-
-            return res.status(200).json({result: "success", page});
     }
 
     public static async apiCreatePage(req: any, res: any, next: any) {
