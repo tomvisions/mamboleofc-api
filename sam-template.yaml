@@ -135,11 +135,12 @@ Resources:
                         RestApiId: !Ref ExpressApi
                         Path: /api/v1/event
                         Method: ANY
-                EventImport:
+
+                EventSlug:
                     Type: Api
                     Properties:
                         RestApiId: !Ref ExpressApi
-                        Path: /api/v1/event/import
+                        Path: /api/v1/event/slug/{slug}
                         Method: ANY
                 Roster:
                     Type: Api
