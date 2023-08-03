@@ -52,7 +52,6 @@ export class CloudFrontMapper {
                 },
             };
             console.log('invalidate');
-            console.log(await this._client.send(new CreateInvalidationCommand(params)));
             console.log({ // CreateInvalidationRequest
                 DistributionId: process.env.CLOUDFRONT_ID, // required
                 InvalidationBatch: { // InvalidationBatch
@@ -65,6 +64,8 @@ export class CloudFrontMapper {
                     CallerReference: "STRING_VALUE", // required
                 },
             });
+            console.log(await this._client.send(new CreateInvalidationCommand(params)));
+
             return await this._client.send(new CreateInvalidationCommand(params));
         } catch (error) {
             console.log('the error that showed up');
