@@ -50,7 +50,7 @@ export class CloudFrontMapper {
                             path,
                         ],
                     },
-                    CallerReference: "STRING_VALUE", // required
+                    CallerReference: `${Date.now()}`, // required
                 },
             };
             console.log('invalidate now');
@@ -63,7 +63,7 @@ export class CloudFrontMapper {
                             path,
                         ],
                     },
-                    CallerReference: "STRING_VALUE", // required
+                    CallerReference: `${Date.now()}`, // required
                 },
             });
             console.log(await this._client.send(new CreateInvalidationCommand(params)));
