@@ -48,6 +48,7 @@ export class PageController {
         //   if (!pageMapper.checkAuthenication(req.headers.authorization)) {
         //     return res.status(500).json({error: 'Not Authorized to access the API'})
         // }
+        console.log('arrived here about')
 
         const queryWhere: QueryWhere = {};
 
