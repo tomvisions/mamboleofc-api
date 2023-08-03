@@ -21,6 +21,15 @@ export class PageController {
             }
 
             return res.status(200).json({result: "success", page});
+        } else if (req.query[pageMapper.PARAMS_SLUG]) {
+            queryWhere.slug = req.query[pageMapper.PARAMS_SLUG];
+            const page = await pageMapper.apiGetPage(queryWhere);
+
+            if (!page) {
+                return res.status(500).json({error: "Unable to retrieve page"})
+            }
+
+            return res.status(200).json({result: "success", page});
         } else {
             pageMapper.QUERY =  req.query;
             const page = await pageMapper.apiGetPages({});
@@ -30,7 +39,7 @@ export class PageController {
             }
 
             const paginationResults = pageMapper.prepareListResults(page,req.query);
-        
+
             return res.status(200).json(paginationResults)
         }
     }
