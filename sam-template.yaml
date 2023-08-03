@@ -166,6 +166,14 @@ Resources:
                         Path: /api/v1/page
                         Method: ANY
 
+                PageSlug:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ExpressApi
+                        Path: /api/v1/page/slug
+                        Method: ANY
+
+
                 Deploy:
                     Type: Api
                     Properties:
