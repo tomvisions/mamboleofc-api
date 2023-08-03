@@ -171,13 +171,6 @@ Resources:
                     Type: Api
                     Properties:
                         RestApiId: !Ref ExpressApi
-                        Path: /api/v1/page/slug
-                        Method: ANY
-
-                PageSlugId:
-                    Type: Api
-                    Properties:
-                        RestApiId: !Ref ExpressApi
                         Path: /api/v1/page/slug/{slug}
                         Method: ANY
 
