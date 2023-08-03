@@ -27,7 +27,7 @@
         "package-deploy": "npm run sam:build && npm run sam:deploy",
         "setup": "npm install && (cross-var aws s3api get-bucket-location --bucket $npm_package_config_s3BucketName --region $npm_package_config_region || npm run create-bucket) && npm run package-deploy",
         "deploy": "npm run environment && npm run build && npm run package-deploy",
-        "environment": "cross-env NODE_ENV=$NODE_ENV HOST=$HOST USERNAME=$USERNAME PASSWORD=$PASSWORD DATABASE=$DATABASE TOKEN_SECRET=$TOKEN_SECRET",
+        "environment": "cross-env NODE_ENV=$NODE_ENV HOST=$HOST USERNAME=$USERNAME PASSWORD=$PASSWORD DATABASE=$DATABASE TOKEN_SECRET=$TOKEN_SECRET DISTRIBUTION_ID=$DISTRIBUTION_ID",
         "start": "cross-env DEBUG=http ts-node src/app.local",
         "test": "find ./dist/test -name '*.js' | xargs nyc --nyc-path ./.nycrc mocha -R spec",
         "test:watch": "npm test -- -- -w"
