@@ -45,7 +45,7 @@ export class CloudFrontMapper {
                 DistributionId: process.env.DISTRIBUTION_ID, // required
                 InvalidationBatch: { // InvalidationBatch
                     Paths: { // Paths
-                        Quantity: Number("20"), // required
+                        Quantity: Number("1"), // required
                         Items: [ // PathList
                             path,
                         ],
@@ -58,7 +58,7 @@ export class CloudFrontMapper {
                 DistributionId: process.env.DISTRIBUTION_ID, // required
                 InvalidationBatch: { // InvalidationBatch
                     Paths: { // Paths
-                        Quantity: Number("20"), // required
+                        Quantity: Number("1"), // required
                         Items: [ // PathList
                             path,
                         ],
