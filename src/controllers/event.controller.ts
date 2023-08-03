@@ -13,8 +13,8 @@ export class EventController {
 //        console.log('hello');
         const queryWhere: QueryWhere = {};
 
-        if (req.query[eventMapper.PARAMS_SLUG]) {
-                queryWhere.slug = req.query[eventMapper.PARAMS_SLUG];
+        if (req.params[eventMapper.PARAMS_SLUG]) {
+                queryWhere.slug = req.params[eventMapper.PARAMS_SLUG];
                 const event = await eventMapper.apiGetEvent(queryWhere);
 
                 if (!event) {

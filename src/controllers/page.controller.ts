@@ -10,11 +10,10 @@ export class PageController {
         //     return res.status(500).json({error: 'Not Authorized to access the API'})
         // }
 
-
         const queryWhere: QueryWhere = {};
 
-        if (req.query[pageMapper.PARAMS_SLUG]) {
-            queryWhere.slug = req.query[pageMapper.PARAMS_SLUG];
+        if (req.params[pageMapper.PARAMS_SLUG]) {
+            queryWhere.slug = req.params[pageMapper.PARAMS_SLUG];
             const page = await pageMapper.apiGetPage(queryWhere);
 
             if (!page) {
@@ -25,8 +24,7 @@ export class PageController {
         } else {
             pageMapper.QUERY =  req.query;
             const page = await pageMapper.apiGetPages({});
-            console.log('the sthi');
-            console.log(page);
+
             if (typeof page === 'string') {
                 return res.status(500).json({error: page})
             }

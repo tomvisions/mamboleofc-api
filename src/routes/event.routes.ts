@@ -6,6 +6,8 @@ eventRouter.post("/", EventController.apiCreateEvents);
 eventRouter.patch("/", EventController.apiUpdateEvents);
 
 eventRouter.get("/", EventController.apiGetEvents);
+eventRouter.get("/slug/:slug", EventController.apiGetEvents);
+
 eventRouter.post("/import", EventController.apiImportEvents);
 
 //eventRouter.get("/import", EventController.apiImportEvents);
