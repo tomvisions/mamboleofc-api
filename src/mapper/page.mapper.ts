@@ -9,6 +9,7 @@ import Utf8 from 'crypto-js/enc-utf8';
 import {BaseMapper} from ".";
 import * as uuid from 'uuid';
 import {FileProperties, s3Mapper} from "./s3.mapper";
+import {cloudFrontMapper} from "./cloudfront.mapper";
 
 export class PageMapper extends BaseMapper {
     private _PARAMS_BANNER_IMAGE: string = 'bannerImage';
@@ -122,8 +123,9 @@ export class PageMapper extends BaseMapper {
     public async apiCreatePage() {
         try {
             const test = await PageMongoose.create({identifier: uuid.v4()}
-            ).then(data => {
+            ).then(async data => {
                 console.log('good stuff');
+                await cloudFrontMapper.createInvalidation(" /api/v1/page")
                 return data;
 
             }).catch(data => {
@@ -179,6 +181,7 @@ export class PageMapper extends BaseMapper {
    //         console.log({"page":page.page, where: {where: {identifier: identifier}}});
 
             const result = await PageMongoose.findOneAndUpdate({identifier: identifier}, page);
+            await cloudFrontMapper.createInvalidation(" /api/v1/page")
 
 
             /*.then(data => {
