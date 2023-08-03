@@ -44,6 +44,20 @@ export class PageController {
         }
     }
 
+    public static async apiGetPageAbout(req: any, res: any, next: any) {
+        //   if (!pageMapper.checkAuthenication(req.headers.authorization)) {
+        //     return res.status(500).json({error: 'Not Authorized to access the API'})
+        // }
+
+        const queryWhere: QueryWhere = {};
+
+            queryWhere.slug = 'about-index'
+            const page = await pageMapper.apiGetPage(queryWhere);
+
+
+            return res.status(200).json({result: "success", page});
+    }
+
     public static async apiCreatePage(req: any, res: any, next: any) {
         try {
             if (req.body[pageMapper.PARAMS_NEW]) {
