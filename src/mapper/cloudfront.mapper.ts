@@ -53,7 +53,7 @@ export class CloudFrontMapper {
                     CallerReference: "STRING_VALUE", // required
                 },
             };
-            console.log('invalidate');
+            console.log('invalidate now');
             console.log({ // CreateInvalidationRequest
                 DistributionId: process.env.CLOUDFRONT_ID, // required
                 InvalidationBatch: { // InvalidationBatch
