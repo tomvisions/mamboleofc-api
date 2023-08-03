@@ -125,7 +125,7 @@ export class PageMapper extends BaseMapper {
             const test = await PageMongoose.create({identifier: uuid.v4()}
             ).then(async data => {
                 console.log('good stuff');
-                await cloudFrontMapper.createInvalidation(" /api/v1/page")
+                await cloudFrontMapper.createInvalidation("/api/v1/page*")
                 return data;
 
             }).catch(data => {

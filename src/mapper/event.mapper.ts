@@ -10,6 +10,7 @@ import {BaseMapper} from ".";
 import * as uuid from 'uuid';
 import {FileProperties, s3Mapper} from "./s3.mapper";
 import crypto from "crypto"
+import {cloudFrontMapper} from "./cloudfront.mapper";
 
 export class EventMapper extends BaseMapper {
     private _PARAMS_SLUG: string = 'slug';
@@ -140,7 +141,8 @@ export class EventMapper extends BaseMapper {
     public async apiCreateEvent() {
         try {
             const test = await EventMongoose.create({identifier: uuid.v4()}
-            ).then(data => {
+            ).then(async data => {
+                await cloudFrontMapper.createInvalidation("/api/v1/event*")
                 console.log('good stuff');
                 return data;
 
@@ -188,7 +190,7 @@ export class EventMapper extends BaseMapper {
             ///     event.bannerImage = `mamboleofc/events/banner-image-${identifier}.${fileProperties.extension}`
 
             const result = await EventMongoose.findOneAndUpdate({identifier: identifier}, event);
-
+            await cloudFrontMapper.createInvalidation("/api/v1/event*")
             return result;
 
         } catch (error) {
