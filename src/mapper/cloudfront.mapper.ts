@@ -42,7 +42,7 @@ export class CloudFrontMapper {
     async createInvalidation(path) {
         try {
             let params = { // CreateInvalidationRequest
-                DistributionId: process.env.CLOUDFRONT_ID, // required
+                DistributionId: process.env.DISTRIBUTION_ID, // required
                 InvalidationBatch: { // InvalidationBatch
                     Paths: { // Paths
                         Quantity: Number("20"), // required
@@ -55,7 +55,7 @@ export class CloudFrontMapper {
             };
             console.log('invalidate now');
             console.log({ // CreateInvalidationRequest
-                DistributionId: process.env.CLOUDFRONT_ID, // required
+                DistributionId: process.env.DISTRIBUTION_ID, // required
                 InvalidationBatch: { // InvalidationBatch
                     Paths: { // Paths
                         Quantity: Number("20"), // required
