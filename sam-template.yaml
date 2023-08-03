@@ -177,7 +177,7 @@ Resources:
                     Type: Api
                     Properties:
                         RestApiId: !Ref ExpressApi
-                        Path: /api/v1/page/slug/about-index
+                        Path: /api/v1/page/slug/:slug
                         Method: ANY
 
 

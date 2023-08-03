@@ -4,8 +4,9 @@ const pageRouter = expressRouter.Router();
 import {PageController} from "../controllers/page.controller";
 pageRouter.post("/", PageController.apiCreatePage);
 pageRouter.patch("/", PageController.apiUpdatePage);
-//pageRouter.get("/slug/:slug", PageController.apiGetPage);
-pageRouter.get("/slug/about-index", PageController.apiGetPageAbout);
+pageRouter.get("/slug/:slug", PageController.apiGetPage);
+
+
 pageRouter.get("/", PageController.apiGetPage);
 
 
