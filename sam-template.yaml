@@ -114,13 +114,13 @@ Resources:
                     Type: Api
                     Properties:
                         RestApiId: !Ref ExpressApi
-                        Path: /api/v1/gallery
+                        Path: /api/v1/gallery/slug/{slug}
                         Method: ANY
                 GalleryImage:
                     Type: Api
                     Properties:
                         RestApiId: !Ref ExpressApi
-                        Path: /api/v1/gallery/image
+                        Path: /api/v1/gallery/primary
                         Method: ANY
                 GalleryImages:
                     Type: Api
