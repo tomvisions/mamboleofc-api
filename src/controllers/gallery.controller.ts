@@ -15,10 +15,10 @@ export class GalleryController {
       //      }
             const options:Options = {image: {primary:false}, gallery: {}};
 
-            if (req.query.primary === '1') {
-                options.image.primary = true;
+            if (req.params.slug) {
+                options.gallery.slug = req.params.slug;
             } else if (req.query.gallery_slug) {
-                options.gallery.slug = req.query.gallery_slug;
+                options.image.primary = true;
             }
 
             const galleries = await galleryMapper.getAllGalleries(options);
