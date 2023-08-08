@@ -11,12 +11,10 @@ const moment = require('moment');
 
 class Gallery extends Base {
     static dateGenerate = (date = null) => {
-        console.log('here');
         return moment().format('YYYY-MM-DD')
     }
 
     static imageSmall = (image) => {
-        console.log('small');
         return `${Base.PARAM_FRONTCLOUD}/${s3Mapper.resizeWithInS3(image, {
             "resize": {
                 "width": 200,
