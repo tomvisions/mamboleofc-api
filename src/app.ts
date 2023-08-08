@@ -32,7 +32,6 @@ app.use(async (req, res, next) => {
 
 app.use("/api/v1/team", teamRouter);
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/gallery", mediaRouter);
 app.use("/api/v1/game", gameRouter);
 app.use("/api/v1/mail", mailRouter);
 app.use("/api/v1/event", eventRouter);
