@@ -17,9 +17,8 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - sam --version
-      - ln -s package.prod.json package.json
       - npm install
       - npm install --location=global cross-env cross-var-no-babel
   build:
     commands:
-      - npm run deploy
+      - npm run deploy-production
