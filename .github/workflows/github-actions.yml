@@ -19,7 +19,5 @@ jobs:
       - run: echo "Performing NPM Install"
       - run: npm ci
       - run: echo "Performing test on app"
-#      - run: npm run test
-#     - run: npm run lint
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
