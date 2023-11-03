@@ -84,8 +84,8 @@ export class MailMapper {
 
     async getContactUsEmail() {
         this._SUBJECT_CONTENT = format(EmailMessaging.CONTACTUS_SUBJECT, this._subject)
-        this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML);
-        this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT);
+        this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML, this._body);
+        this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT, this._body);
     }
 
     async getRegistrationEmail() {
