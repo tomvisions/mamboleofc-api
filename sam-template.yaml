@@ -231,7 +231,7 @@ Resources:
                     - !Ref DomainName
                 ViewerCertificate:
                     AcmCertificateArn: arn:aws:acm:us-east-1:955552760689:certificate/1cbe5bb6-77c0-4103-9200-457077214533
-                    SslSupportedMethod: sni-only
+                    SslSupportMethod: sni-only
                 HttpVersion: http2
                 Origins:
                   - DomainName: !Sub "${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com"
