@@ -64,7 +64,11 @@
         "lodash-es": "^4.17.21",
         "mime": "^3.0.0",
         "moment": "^2.29.3",
+<<<<<<< HEAD
+        "mongoose": "^7.3.3",
+=======
         "mongoose": "^7.6.3",
+>>>>>>> 551b094f28a81bbbe62a916d63d2e638b002caeb
         "multer": "^1.4.5-lts.1",
         "mysql": "^2.18.1",
         "mysql2": "^2.3.3",
