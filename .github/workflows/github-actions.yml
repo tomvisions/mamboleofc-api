@@ -20,4 +20,3 @@ jobs:
       - run: npm ci
       - run: echo "Performing test on app"
       - run: echo "🍏 This job's status is ${{ job.status }}."
-
