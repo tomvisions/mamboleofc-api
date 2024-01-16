@@ -225,6 +225,13 @@ Resources:
             DistributionConfig:
                 Enabled: "true"
                 Comment: !Ref AWS::StackName
+                Aliases:
+                    - !Ref DomainName
+                CNAMEs:
+                    - !Ref DomainName
+                ViewerCertificate:
+                    AcmCertificateArn: arn:aws:acm:us-east-1:955552760689:certificate/1cbe5bb6-77c0-4103-9200-457077214533
+                    SslSupportMethod: sni-only
                 HttpVersion: http2
                 Origins:
                   - DomainName: !Sub "${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com"
@@ -240,10 +247,14 @@ Resources:
                         - GET
                         - HEAD
                         - OPTIONS
+                        - PUT
+                        - POST
+                        - PATCH
+                        - DELETE
                     TargetOriginId: ApiOrigin
                     ViewerProtocolPolicy: "allow-all"
-                    CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
-                    ResponseHeadersPolicyId: "5cc3b908-e619-4b99-88e5-2cf7f45965bd"
+                    CachePolicyId: "742eb823-1ef3-4032-8765-be3ea4bddc50"
+                    OriginRequestPolicyId: "b689b0a8-53d0-40ab-baf2-68738e2966ac"
 
 Outputs:
     LambdaFunctionConsoleUrl:

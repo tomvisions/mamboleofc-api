@@ -51,7 +51,7 @@ export class MailMapper {
             case EmailMessaging.EMAIL_TYPE_CONTACT_US:
                 this._params.Destination.ToAddresses.push('tcruicksh@gmail.com');
                 this._params.Destination.ToAddresses.push('mamboleofc@gmail.com');
-                this._params.Source = 'admin@mamboleofc.ca';
+                this._params.Source = 'tomc@tomvisions.com';
                 this._params.ReplyToAddresses = [];
                 this._params.Template = 'ContactUs';
                 await this.getContactUsEmail();
@@ -84,8 +84,8 @@ export class MailMapper {
 
     async getContactUsEmail() {
         this._SUBJECT_CONTENT = format(EmailMessaging.CONTACTUS_SUBJECT, this._subject)
-        this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML);
-        this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT);
+        this._HTML_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_HTML, this._body);
+        this._TEXT_CONTENT = format(EmailMessaging.CONTACTUS_CONTENT_TEXT, this._body);
     }
 
     async getRegistrationEmail() {
