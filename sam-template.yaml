@@ -31,10 +31,6 @@ Parameters:
         Type: String
         Description: Mongo Live DataBase
         Default: $MongoLiveDataBase
-    DistributionId:
-        Type: String
-        Description: Mongo Live DataBase
-        Default: $DistributionId
 
 
 
@@ -70,7 +66,7 @@ Resources:
                 Variables:
                     MONGO_DATABASE: !Ref MongoDataBase
                     MONGO_LIVE_DATABASE: !Ref MongoLiveDataBase
-                    DISTRIBUTION_ID: !Ref DistributionId
+              
             MemorySize: 1024
             Timeout: 30
             Events:
