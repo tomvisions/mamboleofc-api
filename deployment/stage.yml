@@ -1,6 +1,5 @@
 version: 0.2
 env:
-env:
   secrets-manager:
      DB_INFO_STAGE: arn:aws:secretsmanager:us-east-1:058264500305:secret:MONGO_DB_INFO_STAGE-OBulA6
      DB_INFO_PROD: arn:aws:secretsmanager:us-east-1:058264500305:secret:MONGO_DB_INFO_PRODUCTION-ezzIDz
