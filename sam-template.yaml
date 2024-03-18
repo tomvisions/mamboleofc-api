@@ -75,8 +75,6 @@ Resources:
             Handler: lambda.handler
             Environment:
                 Variables:
-                    MONGO_DATABASE: !Ref MongoDataBase
-                    MONGO_LIVE_DATABASE: !Ref MongoLiveDataBase
                     MONGO_DB_HOST: !Ref MongoDbHost
                     MONGO_DB_USER_NAME: !Ref MongoDbUserName
                     MONGO_DB_PASSWORD: !Ref MongoDbPassword
