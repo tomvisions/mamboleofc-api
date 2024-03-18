@@ -43,6 +43,6 @@ phases:
  #   TOKEN_SECRET: $TOKEN_SECRET
     
       - export NODE_ENV=$(echo "$DB_INFO_STAGE" | jq -r '.NODE_ENV')
-
+      - npm run setup-stage
       - npm run deploy-stage
 
