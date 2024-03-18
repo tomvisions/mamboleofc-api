@@ -23,15 +23,26 @@ Parameters:
         Type: String
         Description: Bucket for Images
         Default: $Stage
-    MongoDataBase:
+    MongoDbHost:
         Type: String
-        Description: Mongo DataBase
-        Default: $MongoDataBase
-    MongoLiveDataBase:
+        Description: Bucket for Images
+        Default: $MongDbHost
+    MongoDbUserName:
         Type: String
-        Description: Mongo Live DataBase
-        Default: $MongoLiveDataBase
-
+        Description: Bucket for Images
+        Default: $MongoDbUserName
+    MongoDbPassword:
+        Type: String
+        Description: Bucket for Images
+        Default: $MongoDbPassword
+    MongoDbNameStage:
+        Type: String
+        Description: Bucket for Images
+        Default: $MongoDbNameStage 
+    MongoDbNameProduction:
+        Type: String
+        Description: Bucket for Images
+        Default: $MongoDbNameProduction
 
 
 Conditions:
@@ -66,7 +77,11 @@ Resources:
                 Variables:
                     MONGO_DATABASE: !Ref MongoDataBase
                     MONGO_LIVE_DATABASE: !Ref MongoLiveDataBase
-              
+                    MONGO_DB_HOST: !Ref MongoDbHost
+                    MONGO_DB_USER_NAME: !Ref MongoDbUserName
+                    MONGO_DB_PASSWORD: !Ref MongoDbPassword
+                    MONGO_DB_NAME_STAGE: !Ref MongoDbNameStage
+                    MONGO_DB_NAME_PRODUCTION: !Ref MongoDbNameProduction
             MemorySize: 1024
             Timeout: 30
             Events:

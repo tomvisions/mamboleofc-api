@@ -1,8 +1,7 @@
 version: 0.2
 env:
   secrets-manager:
-     DB_INFO_STAGE: arn:aws:secretsmanager:us-east-1:058264500305:secret:MONGO_DB_INFO_STAGE-OBulA6
-     DB_INFO_PROD: arn:aws:secretsmanager:us-east-1:058264500305:secret:MONGO_DB_INFO_PRODUCTION-ezzIDz
+     MONGO_DB_INFO: arn:aws:secretsmanager:us-east-1:058264500305:secret:MONGO_DB_INFO-3qWD19
 
   variables:
     DB_HOST: $DB_HOST
@@ -33,20 +32,21 @@ phases:
   build:
     commands:
       - echo "In the building process"
-      - echo $DB_INFO
       - echo "the username"
-      - export DB_USERNAME=$(echo "$DB_INFO_STAGE" | jq -r '.DB_USERNAME')
+      - export MONGO_DB_USERNAME=$(echo "$MONGO_DB_INFO" | jq -r '.DB_USERNAME')
       - echo "db user"
-      - echo $DB_USERNAME
-      - export DB_HOST=$(echo "$DB_INFO_STAGE" | jq -r '.DB_HOST')
+      - echo $MONGO_DB_USERNAME
+      - export MONGO_DB_HOST=$(echo "$MONGO_DB_INFO" | jq -r '.DB_HOST')
       - echo "db host"
-      - echo $DB_HOST
-      - export DB_PASSWORD=$(echo "$DB_INFO_STAGE" | jq -r '.DB_PASSWORD')
-      - export DB_NAME=$(echo "$DB_INFO_STAGE" | jq -r '.DB_NAME')
+      - echo $MONGO_DB_HOST
+      - export MONGO_DB_PASSWORD=$(echo "$MONGO_DB_INFO" | jq -r '.DB_PASSWORD')
+      - export MONGO_DB_NAME_STAGE=$(echo "$MONGO_DB_INFO" | jq -r '.DB_NAME_STAGE')
+      - export MONGO_DB_NAME_PRODUCTION=$(echo "$MONGO_DB_INFO" | jq -r '.DB_NAME_PRODUCTION')
+
       - echo "db name"
-      - echo $DB_NAME
+      - echo $MONGO_DB_NAME_STAGE
  #   TOKEN_SECRET: $TOKEN_SECRET
     
-      - export NODE_ENV=$(echo "$DB_INFO_STAGE" | jq -r '.NODE_ENV')
+      - export NODE_ENV=$(echo "$MONGO_DB_INFO" | jq -r '.NODE_ENV')
       - npm run deploy-stage
 
