@@ -70,7 +70,7 @@ if (process.env.NODE_ENV === 'dev') {
 console.log('process.env');
 
 console.log(process.env);
-const MONGO_DATABASE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@tomvisions-serverless-i.wdrkx.mongodb.net/test`
+const MONGO_DATABASE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@tomvisions-serverless-i.wdrkx.mongodb.net/mamboleofc-staging`
 console.log(MONGO_DATABASE);
 const MONGO_DATABASE_LIVE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@$tomvisions-serverless-i.wdrkx.mongodb.net/${process.env.MONGO_DB_NAME_PRODUCTION}`
 console.log(MONGO_DATABASE_LIVE);
