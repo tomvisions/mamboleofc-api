@@ -70,9 +70,9 @@ if (process.env.NODE_ENV === 'dev') {
 console.log('process.env');
 
 console.log(process.env);
-const MONGO_DATABASE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME_STAGE}`
+const MONGO_DATABASE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@tomvisions-serverless-i.wdrkx.mongodb.net/${process.env.MONGO_DB_NAME_STAGE}`
 console.log(MONGO_DATABASE);
-const MONGO_DATABASE_LIVE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB_NAME_PRODUCTION}`
+const MONGO_DATABASE_LIVE = `mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_PASSWORD}@$tomvisions-serverless-i.wdrkx.mongodb.net/${process.env.MONGO_DB_NAME_PRODUCTION}`
 console.log(MONGO_DATABASE_LIVE);
 
 const mongoose = Mongoose.createConnection(MONGO_DATABASE, options);
