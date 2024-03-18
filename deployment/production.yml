@@ -1,7 +1,7 @@
 version: 0.2
 env:
   secrets-manager:
-     DB_INFO: arn:aws:secretsmanager:us-east-1:955552760689:secret:DB_INFO_STAGE-4BHG61
+     DB_INFO:  arn:aws:secretsmanager:us-east-1:058264500305:secret:MONGO_DB_INFO-3qWD19
 
   variables:
     DB_HOST: $DB_HOST
@@ -24,4 +24,18 @@ phases:
       - npm install --location=global cross-env cross-var-no-babel
   build:
     commands:
+      - echo "In the building process"
+      - echo "the username"
+      - export MONGO_DB_USERNAME=$(echo "$MONGO_DB_INFO" | jq -r '.DB_USERNAME')
+      - echo "db user"
+      - echo $MONGO_DB_USERNAME
+      - export MONGO_DB_HOST=$(echo "$MONGO_DB_INFO" | jq -r '.DB_HOST')
+      - echo "db host"
+      - echo $MONGO_DB_HOST
+      - export MONGO_DB_PASSWORD=$(echo "$MONGO_DB_INFO" | jq -r '.DB_PASSWORD')
+      - export MONGO_DB_NAME_STAGE=$(echo "$MONGO_DB_INFO" | jq -r '.DB_NAME_PRODUCTION')
+      - export MONGO_DB_NAME_PRODUCTION=$(echo "$MONGO_DB_INFO" | jq -r '.DB_NAME_PRODUCTION')
+
+      - echo "db name"
+      - echo $MONGO_DB_NAME_STAGE
       - npm run deploy-production
