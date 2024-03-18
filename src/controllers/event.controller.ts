@@ -1,4 +1,5 @@
 import {eventMapper} from "../mapper";
+import {cloudFrontMapper} from "../mapper/cloudfront.mapper";
 
 export interface QueryWhere {
     slug?:string;
@@ -40,6 +41,8 @@ export class EventController {
             if (req.body[eventMapper.PARAMS_NEW]) {
 
                 const event = await eventMapper.apiCreateEvent();
+                await cloudFrontMapper.createInvalidation(" /api/v1/page")
+
 
                 if (!event) {
                     return res.status(500).json({error: "Error creating Event"})
@@ -63,6 +66,7 @@ export class EventController {
                 //      if (req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_NAME] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_ABOUT] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_LINK] && req.body[eventMapper.PARAMS_EVENT][eventMapper.PARAMS_BANNER_IMAGE]) {
 
                 event = await eventMapper.apiUpdateEvent(req.body.identifier, req.body.event);
+                await cloudFrontMapper.createInvalidation(" /api/v1/page")
 
                 if (!event) {
                     return res.status(500).json({error: "Error Event already exists"})
