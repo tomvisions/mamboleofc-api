@@ -24,5 +24,4 @@ phases:
       - npm install --location=global cross-env cross-var-no-babel
   build:
     commands:
-      - nom run setup-production
       - npm run deploy-production
