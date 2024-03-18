@@ -36,10 +36,15 @@ phases:
       - echo $DB_INFO
       - echo "the username"
       - export DB_USERNAME=$(echo "$DB_INFO_STAGE" | jq -r '.DB_USERNAME')
+      - echo "db user"
       - echo $DB_USERNAME
       - export DB_HOST=$(echo "$DB_INFO_STAGE" | jq -r '.DB_HOST')
+      - echo "db host"
+      - echo $DB_HOST
       - export DB_PASSWORD=$(echo "$DB_INFO_STAGE" | jq -r '.DB_PASSWORD')
       - export DB_NAME=$(echo "$DBDB_INFO_STAGE_INFO" | jq -r '.DB_NAME')
+      - echo "db name"
+      - echo $DB_NAME
  #   TOKEN_SECRET: $TOKEN_SECRET
     
       - export NODE_ENV=$(echo "$DB_INFO_STAGE" | jq -r '.NODE_ENV')
