@@ -67,7 +67,11 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     options = { useNewUrlParser: true, useUnifiedTopology: true }
 }
+console.log('process.env');
+
+console.log(process.env);
 const MONGO_DATABASE = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@tomvisions-serverless-i.wdrkx.mongodb.net/${process.env.DB_HOST}`
+console.log(MONGO_DATABASE);
 
 const mongoose = Mongoose.createConnection(MONGO_DATABASE, options);
 const mongooseLive = Mongoose.createConnection(process.env.MONGO_LIVE_DATABASE, options);
