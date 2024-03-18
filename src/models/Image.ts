@@ -13,6 +13,8 @@ class Image extends Base {
     }
 
     static generateSmallAndOriginal = (image) => {
+
+        image = image.replace("mamboleofc/", "");    
         const signatureSmall = s3Mapper.resizeWithInS3(image, {
             "resize": {
                 "width": 200,
