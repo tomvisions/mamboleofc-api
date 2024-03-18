@@ -11,6 +11,10 @@ Parameters:
         Type: String
         Description: Certificate
         Default: $Certificate
+    BucketNameImages:
+        Type: String
+        Description: Bucket for Images
+        Default: $BucketNameImages
 
 Conditions:
     UseDomainName: !Not
@@ -27,6 +31,11 @@ Resources:
         Type: AWS::Serverless::Api
         Properties:
             StageName: stage
+            BinaryMediaTypes:
+                - image/png
+                - image/jpg
+                - image/jpeg
+                - multipart/form-data
 
     ExpressLambdaFunction:
         Type: AWS::Serverless::Function
@@ -146,6 +155,9 @@ Resources:
                 - SESBulkTemplatedCrudPolicy:
                       IdentityName: mamboleofc.ca
                 - SESEmailTemplateCrudPolicy: {}
+                - S3WritePolicy:
+                      BucketName: !Ref BucketNameImages
+
 
 
     MyApiCertificate:
