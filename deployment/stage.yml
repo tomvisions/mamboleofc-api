@@ -42,7 +42,7 @@ phases:
       - echo "db host"
       - echo $DB_HOST
       - export DB_PASSWORD=$(echo "$DB_INFO_STAGE" | jq -r '.DB_PASSWORD')
-      - export DB_NAME=$(echo "$DB_INFO_STAGE_INFO" | jq -r '.DB_NAME')
+      - export DB_NAME=$(echo "$DB_INFO_STAGE" | jq -r '.DB_NAME')
       - echo "db name"
       - echo $DB_NAME
  #   TOKEN_SECRET: $TOKEN_SECRET
