@@ -29,7 +29,8 @@ phases:
       - export MONGO_DB_USERNAME=$(echo "$MONGO_DB_INFO" | jq -r '.DB_USERNAME')
       - echo "db user"
       - echo $MONGO_DB_USERNAME
-      - export MONGO_DB_HOST=$(echo "$MONGO_DB_INFO" | jq -r '.DB_HOST')
+     # - export MONGO_DB_HOST=$(echo "$MONGO_DB_INFO" | jq -r '.DB_HOST')
+      - export MONGO_DB_HOST=test
       - echo "db host"
       - echo $MONGO_DB_HOST
       - export MONGO_DB_PASSWORD=$(echo "$MONGO_DB_INFO" | jq -r '.DB_PASSWORD')
